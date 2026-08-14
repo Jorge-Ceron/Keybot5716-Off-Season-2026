@@ -1,12 +1,9 @@
-package frc.robot.subsystems.shooter.rollers;
-
-import static edu.wpi.first.units.Units.Volts;
+package frc.robot.subsystems.transfer;
 
 import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.VelocityVoltage;
-import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 import com.ctre.phoenix6.signals.InvertedValue;
@@ -19,10 +16,9 @@ import edu.wpi.first.units.measure.Voltage;
 import frc.lib.util.TalonFXSignalFrequencies;
 import frc.robot.subsystems.superstructure.SuperstructureConstants.IDs;
 
-public class ShooterRollersIOTalonFX implements ShooterRollersIO {
+public class TrasnferIOTalonFX implements TransferIO {
   private final TalonFX motor;
 
-  private final VoltageOut voltageOut = new VoltageOut(Volts.zero());
   private final VelocityVoltage velocityRequest = new VelocityVoltage(0);
 
   private final TalonFXConfiguration config = new TalonFXConfiguration();
@@ -34,8 +30,8 @@ public class ShooterRollersIOTalonFX implements ShooterRollersIO {
   private final StatusSignal<Current> statorCurrentRollers;
   private final StatusSignal<Temperature> tempCelsius;
 
-  public ShooterRollersIOTalonFX() {
-    motor = new TalonFX(IDs.SHOOTER_ROLLERS_ID);
+  public TrasnferIOTalonFX() {
+    motor = new TalonFX(IDs.TRANSFER_ID);
 
     config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
     config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
@@ -56,10 +52,10 @@ public class ShooterRollersIOTalonFX implements ShooterRollersIO {
 
     config.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RotorSensor;
 
-    config.Slot0.kP = 0.6;
+    config.Slot0.kP = 0.3;
     config.Slot0.kI = 0.0;
     config.Slot0.kD = 0.0;
-    config.Slot0.kV = 0.13;
+    config.Slot0.kV = 0.15;
 
     config.Audio.BeepOnBoot = true;
 
@@ -89,11 +85,6 @@ public class ShooterRollersIOTalonFX implements ShooterRollersIO {
   }
 
   @Override
-  public void setVoltage(double voltage) {
-    motor.setControl(voltageOut.withOutput(voltage));
-  }
-
-  @Override
   public void setVelocity(double rps) {
     motor.setControl(velocityRequest.withVelocity(rps));
   }
@@ -104,7 +95,7 @@ public class ShooterRollersIOTalonFX implements ShooterRollersIO {
   }
 
   @Override
-  public void updateInputs(ShooterRollersIOInputs inputs) {
+  public void updateInputs(TransferIOInputs inputs) {
     inputs.motorConnected =
         BaseStatusSignal.isAllGood(
             appliedVolts,
