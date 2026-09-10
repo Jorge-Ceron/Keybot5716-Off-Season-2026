@@ -5,7 +5,6 @@ import edu.wpi.first.math.geometry.Rotation3d;
 import frc.lib.util.Visualizer;
 import frc.robot.RobotState;
 import frc.robot.subsystems.intake.pinion.IntakePinionIOSim;
-
 import org.littletonrobotics.junction.Logger;
 
 public class RobotSimVisualizer implements Visualizer {

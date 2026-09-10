@@ -6,7 +6,6 @@ import edu.wpi.first.wpilibj.Timer;
 import frc.robot.RobotContainerSim;
 import frc.robot.RobotState;
 import frc.robot.subsystems.intake.pinion.IntakePinionIOSim;
-
 import org.ironmaple.simulation.drivesims.SwerveDriveSimulation;
 import org.littletonrobotics.junction.Logger;
 
