@@ -12,7 +12,7 @@ import frc.robot.subsystems.superstructure.SuperstructureConstants.IntakeConstan
 import org.littletonrobotics.junction.Logger;
 
 public class IntakePinionSubsystem extends SubsystemBase {
-  private final IntakePinionIO pinionIO;
+  private IntakePinionIO pinionIO;
 
   // Renamed the variable name to 'pinionInputs' from 'pinionInputsAutoLogged' for more readability.
   private final IntakePinionIOInputsAutoLogged pinionInputs = new IntakePinionIOInputsAutoLogged();
@@ -52,7 +52,6 @@ public class IntakePinionSubsystem extends SubsystemBase {
   }
 
   public IntakePinionSubsystem(IntakePinionIO pinionIO, RobotState robotState) {
-    this.pinionIO = pinionIO;
     this.pinionIO = pinionIO;
     this.robotState = robotState;
     controller.setTolerance(0.02);
@@ -108,7 +107,7 @@ public class IntakePinionSubsystem extends SubsystemBase {
         break;
 
       case REVERSING_PINION:
-        runPivotOL(-pivotVolts.get());
+        runPinion(-pinionVolts.get());
         break;
 
       case STOPPING_PINION:
