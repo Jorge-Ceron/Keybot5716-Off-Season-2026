@@ -4,17 +4,18 @@ import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import frc.lib.util.Visualizer;
 import frc.robot.RobotState;
-import frc.robot.subsystems.intake.pivot.IntakePivotIOSim;
+import frc.robot.subsystems.intake.pinion.IntakePinionIOSim;
+
 import org.littletonrobotics.junction.Logger;
 
 public class RobotSimVisualizer implements Visualizer {
   private RobotState state;
 
-  private IntakePivotIOSim intakePivotIOSim;
+  private IntakePinionIOSim intakePivotIOSim;
 
   private Pose3d intakePose3d = new Pose3d();
 
-  public RobotSimVisualizer(RobotState state, IntakePivotIOSim intakePivotIOSim) {
+  public RobotSimVisualizer(RobotState state, IntakePinionIOSim intakePivotIOSim) {
     this.state = state;
     this.intakePivotIOSim = intakePivotIOSim;
   }

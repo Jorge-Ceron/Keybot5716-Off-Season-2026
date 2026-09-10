@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.FieldConstants;
 import frc.robot.RobotState;
 import frc.robot.subsystems.drive.DriveSubsystem;
-import frc.robot.subsystems.intake.pivot.IntakePivotSubsystem;
+import frc.robot.subsystems.intake.pinion.IntakePinionSubsystem;
 import frc.robot.subsystems.intake.rollers.IntakeRollersSubsystem;
 import frc.robot.subsystems.shooter.ShootCalculator;
 import frc.robot.subsystems.shooter.hood.ShooterHoodSubsystem;
@@ -21,7 +21,7 @@ import org.littletonrobotics.junction.Logger;
 public class Superstructure extends SubsystemBase {
 
   private final DriveSubsystem driveSub;
-  private final IntakePivotSubsystem intakePivotSubsystem;
+  private final IntakePinionSubsystem intakePivotSubsystem;
   private final IntakeRollersSubsystem intakeRollersSub;
   private final TransferSubsystem transferSub;
   private final ShooterHoodSubsystem shooterHoodSub;
@@ -39,7 +39,7 @@ public class Superstructure extends SubsystemBase {
 
   public Superstructure(
       DriveSubsystem driveSub,
-      IntakePivotSubsystem intakePivotSubsystem,
+      IntakePinionSubsystem intakePivotSubsystem,
       IntakeRollersSubsystem intakeRollersSub,
       TransferSubsystem transferSub,
       ShooterHoodSubsystem shooterHoodSub,
@@ -122,7 +122,7 @@ public class Superstructure extends SubsystemBase {
 
   private void home() {
     driveSub.setState(DriveSubsystem.DesiredState.MANUAL_FIELD_DRIVE);
-    intakePivotSubsystem.setDesiredState(IntakePivotSubsystem.DesiredState.OUT);
+    intakePivotSubsystem.setDesiredState(IntakePinionSubsystem.DesiredState.OUT);
     intakeRollersSub.setDesiredState(IntakeRollersSubsystem.DesiredState.STOPPED);
     transferSub.setDesiredState(TransferSubsystem.DesiredState.STOPPED);
     shooterHoodSub.setDesiredState(ShooterHoodSubsystem.DesiredState.HOME);
@@ -131,7 +131,7 @@ public class Superstructure extends SubsystemBase {
 
   private void intake() {
     driveSub.setState(DriveSubsystem.DesiredState.MANUAL_FIELD_DRIVE);
-    intakePivotSubsystem.setDesiredState(IntakePivotSubsystem.DesiredState.OUT);
+    intakePivotSubsystem.setDesiredState(IntakePinionSubsystem.DesiredState.OUT);
     transferSub.setDesiredState(TransferSubsystem.DesiredState.STOPPED);
     shooterHoodSub.setDesiredState(ShooterHoodSubsystem.DesiredState.STOPPED);
     shooterRollerSub.setDesiredState(ShooterRollersSubsystem.DesiredState.STOPPED);

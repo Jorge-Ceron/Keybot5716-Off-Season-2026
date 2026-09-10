@@ -38,7 +38,7 @@ import frc.robot.subsystems.drive.DriveConstants;
 import frc.robot.subsystems.drive.DriveIOSim;
 import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.subsystems.drive.TunerConstants;
-import frc.robot.subsystems.intake.pivot.IntakePivotIOSim;
+import frc.robot.subsystems.intake.pinion.IntakePinionIOSim;
 import frc.robot.subsystems.shooter.ShootCalculator;
 import frc.robot.subsystems.vision.VisionPoseEstimateInField;
 import frc.robot.subsystems.visualizers.RobotSimVisualizer;
@@ -86,12 +86,12 @@ public class RobotContainerSim implements RobotCore {
 
   private DriveSubsystem driveSub = buildDriveSubsystem();
 
-  private IntakePivotIOSim buildIntakePivotSim() {
-    return new IntakePivotIOSim(driveSub.getMapleSimDrive().mapleSimDrive);
+  private IntakePinionIOSim buildIntakePivotSim() {
+    return new IntakePinionIOSim(driveSub.getMapleSimDrive().mapleSimDrive);
   }
 
   // Subsystems
-  private IntakePivotIOSim intakePivotSubSim = buildIntakePivotSim();
+  private IntakePinionIOSim intakePivotSubSim = buildIntakePivotSim();
   private ShootCalculator shootCalculator = new ShootCalculator(robotState);
   public static final double HOOD_MIN_POS = 0.0;
   public static final double HOOD_MAX_POS = 1.0;
@@ -323,7 +323,7 @@ public class RobotContainerSim implements RobotCore {
     return robotState;
   }
 
-  public IntakePivotIOSim getIntakePivotIOSim() {
+  public IntakePinionIOSim getIntakePivotIOSim() {
     return intakePivotSubSim;
   }
 

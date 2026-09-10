@@ -18,7 +18,7 @@ import frc.lib.team6328.LocalADStarAK;
 import frc.lib.util.RobotCore;
 import frc.robot.Auto.*;
 import frc.robot.subsystems.drive.*;
-import frc.robot.subsystems.intake.pivot.*;
+import frc.robot.subsystems.intake.pinion.*;
 import frc.robot.subsystems.intake.rollers.*;
 import frc.robot.subsystems.shooter.ShootCalculator;
 import frc.robot.subsystems.shooter.hood.*;
@@ -48,8 +48,8 @@ public class RobotContainer implements RobotCore {
   }
 
   //  -- Intake
-  private IntakePivotSubsystem buildIntakePivot() {
-    return new IntakePivotSubsystem(new IntakePivotIOTalonFX(), robotState);
+  private IntakePinionSubsystem buildIntakePivot() {
+    return new IntakePinionSubsystem(new IntakePinionIOTalonFX(), robotState);
   }
 
   private IntakeRollersSubsystem buildIntakeRollers() {
@@ -130,7 +130,7 @@ public class RobotContainer implements RobotCore {
   private final ShooterRollersSubsystem shooterRollersSub = buildShooterRollers();
   private final TransferSubsystem transferSub = buildTransfer();
   private final IntakeRollersSubsystem intakeRollersSub = buildIntakeRollers();
-  private final IntakePivotSubsystem intakePivotSub = buildIntakePivot();
+  private final IntakePinionSubsystem intakePivotSub = buildIntakePivot();
   private final VisionSubsystem visionSub = buildVisionSubsystem();
   private final ShootCalculator shootCalculator = new ShootCalculator(robotState);
 
@@ -210,12 +210,12 @@ public class RobotContainer implements RobotCore {
         .a()
         .onTrue(
             Commands.runOnce(
-                () -> intakePivotSub.setDesiredState(IntakePivotSubsystem.DesiredState.IN)));
+                () -> intakePivotSub.setDesiredState(IntakePinionSubsystem.DesiredState.IN)));
     controller
         .b()
         .onTrue(
             Commands.runOnce(
-                () -> intakePivotSub.setDesiredState(IntakePivotSubsystem.DesiredState.OUT)));
+                () -> intakePivotSub.setDesiredState(IntakePinionSubsystem.DesiredState.OUT)));
 
     controller.povLeft().onTrue(superstructure.setCommand(SuperstructureStates.HOME));
   }

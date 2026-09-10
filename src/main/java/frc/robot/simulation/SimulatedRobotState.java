@@ -5,7 +5,8 @@ import edu.wpi.first.math.interpolation.TimeInterpolatableBuffer;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.RobotContainerSim;
 import frc.robot.RobotState;
-import frc.robot.subsystems.intake.pivot.IntakePivotIOSim;
+import frc.robot.subsystems.intake.pinion.IntakePinionIOSim;
+
 import org.ironmaple.simulation.drivesims.SwerveDriveSimulation;
 import org.littletonrobotics.junction.Logger;
 
@@ -14,7 +15,7 @@ public class SimulatedRobotState {
       TimeInterpolatableBuffer.createBuffer(RobotState.BUFFER_TIME);
 
   private SwerveDriveSimulation simSwerveDrive;
-  private IntakePivotIOSim intakePivotSim;
+  private IntakePinionIOSim intakePivotSim;
   private final RobotContainerSim containerSim;
 
   public SimulatedRobotState(RobotContainerSim containerSim) {
