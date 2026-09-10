@@ -1,0 +1,205 @@
+{
+  "version": 1.0,
+  "grid_size": 128,
+  "tabs": [
+    {
+      "name": "Teleoperated",
+      "grid_layout": {
+        "layouts": [
+          {
+            "title": "RobotState",
+            "x": 384.0,
+            "y": 128.0,
+            "width": 256.0,
+            "height": 640.0,
+            "type": "List Layout",
+            "properties": {
+              "label_position": "TOP"
+            },
+            "children": [
+              {
+                "title": "AccelX",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/AdvantageKit/RealOutputs/RobotState/AccelX",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "AccelY",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/AdvantageKit/RealOutputs/RobotState/AccelY",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "PitchAngularVel",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/AdvantageKit/RealOutputs/RobotState/PitchAngularVel",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "PitchRads",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/AdvantageKit/RealOutputs/RobotState/PitchRads",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "RollAngularVel",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/AdvantageKit/RealOutputs/RobotState/RollAngularVel",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "RollRads",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/AdvantageKit/RealOutputs/RobotState/RollRads",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "YawAngularVel",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/AdvantageKit/RealOutputs/RobotState/YawAngularVel",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "isRedAlliance",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Boolean Box",
+                "properties": {
+                  "topic": "/AdvantageKit/RealOutputs/RobotState/isRedAlliance",
+                  "period": 0.06,
+                  "data_type": "boolean",
+                  "true_color": 4283215696,
+                  "false_color": 4294198070,
+                  "true_icon": "None",
+                  "false_icon": "None"
+                }
+              }
+            ]
+          }
+        ],
+        "containers": [
+          {
+            "title": "Auto Chooser",
+            "x": 384.0,
+            "y": 0.0,
+            "width": 256.0,
+            "height": 128.0,
+            "type": "ComboBox Chooser",
+            "properties": {
+              "topic": "/SmartDashboard/Auto Chooser",
+              "period": 0.06,
+              "sort_options": false
+            }
+          },
+          {
+            "title": "Field",
+            "x": 0.0,
+            "y": 0.0,
+            "width": 384.0,
+            "height": 896.0,
+            "type": "Field",
+            "properties": {
+              "topic": "/SmartDashboard/Field",
+              "period": 0.06,
+              "field_game": "Reefscape",
+              "robot_width": 0.85,
+              "robot_length": 0.85,
+              "show_other_objects": true,
+              "show_trajectories": true,
+              "field_rotation": -90.0,
+              "robot_color": 4294198070,
+              "trajectory_color": 4294967295,
+              "show_robot_outside_widget": true
+            }
+          },
+          {
+            "title": "AutoPrev",
+            "x": 640.0,
+            "y": 0.0,
+            "width": 768.0,
+            "height": 384.0,
+            "type": "Field",
+            "properties": {
+              "topic": "/SmartDashboard/AutoPrev",
+              "period": 0.06,
+              "field_game": "Reefscape",
+              "robot_width": 0.85,
+              "robot_length": 0.85,
+              "show_other_objects": true,
+              "show_trajectories": true,
+              "field_rotation": 0.0,
+              "robot_color": 4294198070,
+              "trajectory_color": 4294967295,
+              "show_robot_outside_widget": true
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "Autonomous",
+      "grid_layout": {
+        "layouts": [],
+        "containers": []
+      }
+    }
+  ]
+}

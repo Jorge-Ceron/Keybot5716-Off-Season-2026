@@ -1,0 +1,114 @@
+{
+  "hubs": [
+    {
+      "x": -8,
+      "y": -8,
+      "width": 1936,
+      "height": 1056,
+      "state": {
+        "sidebar": {
+          "width": 300,
+          "expanded": [
+            "/AdvantageKit",
+            "/AdvantageKit/RealOutputs",
+            "/AdvantageKit/RealOutputs/Drive/Telemetry",
+            "/AdvantageKit/RealOutputs/ComponentsPoseArray"
+          ]
+        },
+        "tabs": {
+          "selected": 3,
+          "tabs": [
+            {
+              "type": 0,
+              "title": "",
+              "controller": null,
+              "controllerUUID": "f7s196ifefpwjcoyv1lfbyxo5k26so30",
+              "renderer": "",
+              "controlsHeight": 0
+            },
+            {
+              "type": 1,
+              "title": "Line Graph",
+              "controller": {
+                "leftSources": [],
+                "rightSources": [],
+                "discreteSources": [],
+                "leftLockedRange": null,
+                "rightLockedRange": null,
+                "leftUnitConversion": {
+                  "autoTarget": null,
+                  "preset": null
+                },
+                "rightUnitConversion": {
+                  "autoTarget": null,
+                  "preset": null
+                },
+                "leftFilter": 0,
+                "rightFilter": 0
+              },
+              "controllerUUID": "fuxp6tqp7ig07fpzvjk78807qojs51id",
+              "renderer": null,
+              "controlsHeight": 200
+            },
+            {
+              "type": 2,
+              "title": "2D Field",
+              "controller": {
+                "sources": [],
+                "field": "FRC:2026 Field",
+                "orientation": 0,
+                "size": "large"
+              },
+              "controllerUUID": "p7dzqy3hjosc0ay9n3s5q8hk66tft3p7",
+              "renderer": null,
+              "controlsHeight": 200
+            },
+            {
+              "type": 3,
+              "title": "SimRobot",
+              "controller": {
+                "sources": [
+                  {
+                    "type": "robot",
+                    "logKey": "NT:/AdvantageKit/RealOutputs/FieldSimulation/SimulatedPose",
+                    "logType": "Pose2d",
+                    "visible": true,
+                    "options": {
+                      "model": "Icarus"
+                    }
+                  },
+                  {
+                    "type": "component",
+                    "logKey": "NT:/AdvantageKit/RealOutputs/ComponentsPoseArray/0",
+                    "logType": "Pose3d",
+                    "visible": true,
+                    "options": {}
+                  }
+                ],
+                "game": "FRC:2026 Field"
+              },
+              "controllerUUID": "bwbouj6ckcz71edcme1q33cwxpc54kcf",
+              "renderer": {
+                "cameraIndex": -1,
+                "orbitFov": 50,
+                "cameraPosition": [
+                  -9.764532274261413,
+                  8.281984032031147,
+                  0.10160458102566262
+                ],
+                "cameraTarget": [
+                  -5.26456847084299,
+                  1.3161813939781954,
+                  0.07841161638784663
+                ]
+              },
+              "controlsHeight": 213
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "satellites": [],
+  "version": "26.0.0"
+}
