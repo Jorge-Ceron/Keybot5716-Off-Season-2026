@@ -16,4 +16,3 @@ public class IntakePivotDriveTrainSim extends AbstractDriveTrainSimulation {
     throw new UnsupportedOperationException("Unimplemented method 'simulationSubTick'");
   }
 }
-
