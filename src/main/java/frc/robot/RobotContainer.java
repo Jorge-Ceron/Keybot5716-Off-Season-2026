@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.lib.team6328.LocalADStarAK;
 import frc.lib.util.RobotCore;
-import frc.robot.auto.*;
+import frc.robot.Auto.*;
 import frc.robot.subsystems.drive.*;
 import frc.robot.subsystems.intake.pivot.*;
 import frc.robot.subsystems.intake.rollers.*;

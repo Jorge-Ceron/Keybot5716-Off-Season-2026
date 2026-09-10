@@ -1,4 +1,4 @@
-package frc.robot.auto;
+package frc.robot.Auto;
 
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.PathPlannerPath;
@@ -24,25 +24,13 @@ public class Auto4Test extends AutoBuilder {
 
   @Override
   public List<Pose2d> getPathPoses() {
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
     return getPathPosesList(test8, test9, test10);
   }
 
   @Override
-<<<<<<< Updated upstream
   public Pose2d getStartingPose() {
     if (test8 != null) {
       return test8.getStartingDifferentialPose();
-=======
-  public List<Posed2d> getStartingPose() {
-
-    if (test8 != null) {
-
-      return getStartingDifferentialPose();
->>>>>>> Stashed changes
     }
 
     DriverStation.reportError("Path is null", true);

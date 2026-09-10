@@ -1,4 +1,4 @@
-package frc.robot.auto;
+package frc.robot.Auto;
 
 import static edu.wpi.first.wpilibj2.command.Commands.none;
 import static java.util.Collections.emptyList;
