@@ -147,6 +147,6 @@ public class IntakePinionSubsystem extends SubsystemBase {
     double scale = (Math.PI / 2.0) / (maxRot - minRot); // 90° = π/2
     double rad = (rot - minRot) * scale;
 
-    return MathUtil.clamp(rad, 0.0, Math.PI / 2.0);
+    return MathUtil.clamp(rad, 0.0, Math.PI / 2.0);//hola soy george67676767676767
   }
 }

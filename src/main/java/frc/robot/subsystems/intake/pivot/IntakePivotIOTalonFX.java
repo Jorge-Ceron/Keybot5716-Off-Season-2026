@@ -1,4 +1,4 @@
-package frc.robot.subsystems.intake.pinion;
+package frc.robot.subsystems.intake.pivot;
 
 import static edu.wpi.first.units.Units.Volts;
 
@@ -22,8 +22,8 @@ import edu.wpi.first.units.measure.Voltage;
 import frc.lib.util.TalonFXSignalFrequencies;
 import frc.robot.subsystems.superstructure.SuperstructureConstants.IDs;
 
-public class IntakePinionIOTalonFX implements IntakePinionIO {
-  private final TalonFX PinMotor;
+public class IntakePivotIOTalonFX implements IntakePivotIO {
+  private final TalonFX motor;
   private final VoltageOut voltageOut = new VoltageOut(Volts.zero());
   private final PositionVoltage positionVoltage = new PositionVoltage(0.0);
 
@@ -37,8 +37,8 @@ public class IntakePinionIOTalonFX implements IntakePinionIO {
   private final StatusSignal<Current> statorCurrentIntake;
   private final StatusSignal<Temperature> tempCelsius;
 
-  public IntakePinionIOTalonFX() {
-    PinMotor = new TalonFX(IDs.INTAKE_PINION_ID);
+  public IntakePivotIOTalonFX() {
+    motor = new TalonFX(IDs.INTAKE_PIVOT_ID);
 
     config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
     config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
@@ -67,16 +67,16 @@ public class IntakePinionIOTalonFX implements IntakePinionIO {
 
     config.Audio.BeepOnBoot = true;
 
-    PinMotor.getConfigurator().apply(config);
+    motor.getConfigurator().apply(config);
 
 
-    appliedVolts = PinMotor.getMotorVoltage();
-    positionIntake = PinMotor.getRotorPosition();
-    velocityIntake = PinMotor.getRotorVelocity();
-    accelerationIntake = PinMotor.getAcceleration();
-    supplyCurrentIntake = PinMotor.getSupplyCurrent();
-    statorCurrentIntake = PinMotor.getStatorCurrent();
-    tempCelsius = PinMotor.getDeviceTemp();
+    appliedVolts = motor.getMotorVoltage();
+    positionIntake = motor.getRotorPosition();
+    velocityIntake = motor.getRotorVelocity();
+    accelerationIntake = motor.getAcceleration();
+    supplyCurrentIntake = motor.getSupplyCurrent();
+    statorCurrentIntake = motor.getStatorCurrent();
+    tempCelsius = motor.getDeviceTemp();
 
     TalonFXSignalFrequencies.updateFrequencyTalonFX(
         appliedVolts,
@@ -87,26 +87,26 @@ public class IntakePinionIOTalonFX implements IntakePinionIO {
         statorCurrentIntake,
         tempCelsius);
 
-    PinMotor.optimizeBusUtilization();
-    PinMotor.setPosition(0.0);
+    motor.optimizeBusUtilization();
+    motor.setPosition(0.0);
   }
 
   public void setPosition(double position) {
-    PinMotor.setControl(positionVoltage.withPosition(position));
+    motor.setControl(positionVoltage.withPosition(position));
   }
 
   @Override
   public void setVoltage(double voltage) {
-    PinMotor.setControl(voltageOut.withOutput(voltage));
+    motor.setControl(voltageOut.withOutput(voltage));
   }
 
   @Override
   public void stopMotor() {
-    PinMotor.stopMotor();
+    motor.stopMotor();
   }
 
   @Override
-  public void updateInputs(IntakePinionIOInputs inputs) {
+  public void updateInputs(IntakePivotIOInputs inputs) {
     inputs.motorConnected =
         BaseStatusSignal.isAllGood(
             appliedVolts,
