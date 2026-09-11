@@ -37,7 +37,7 @@ public class IntakePinionIOTalonFX implements IntakePinionIO {
   private final StatusSignal<Temperature> tempCelsius;
 
   public IntakePinionIOTalonFX() {
-    motor = new TalonFX(IDs.INTAKE_PIVOT_ID);
+    motor = new TalonFX(IDs.INTAKE_PINION_ID);
 
     config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
     config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
