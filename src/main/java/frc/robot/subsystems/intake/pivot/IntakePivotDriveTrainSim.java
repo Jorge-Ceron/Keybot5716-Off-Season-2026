@@ -1,7 +1,6 @@
-//Necesita mucho trabajo
+// Necesita mucho trabajo
 
-
-/* 
+/*
 package frc.robot.subsystems.intake.pivot;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -19,6 +18,6 @@ public class IntakePivotDriveTrainSim {
     // TODO Auto-generated method stub
     throw new UnsupportedOperationException("Unimplemented method 'simulationSubTick'");
   }
-    
+
 }
 */

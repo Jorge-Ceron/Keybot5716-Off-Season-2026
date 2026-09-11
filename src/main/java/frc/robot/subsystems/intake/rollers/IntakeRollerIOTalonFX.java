@@ -104,7 +104,7 @@ public class IntakeRollerIOTalonFX implements IntakeRollersIO {
 
   @Override
   public void stopMotor() {
-    ILmotor.stopMotor(); 
+    ILmotor.stopMotor();
   }
 
   @Override
@@ -124,7 +124,6 @@ public class IntakeRollerIOTalonFX implements IntakeRollersIO {
     inputs.statorCurrent = statorCurrentRollers.getValueAsDouble();
     inputs.tempCelcius = tempCelsius.getValueAsDouble();
   }
-
 
   @Override
   public void refreshData() {

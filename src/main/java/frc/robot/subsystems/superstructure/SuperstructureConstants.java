@@ -9,7 +9,7 @@ public class SuperstructureConstants {
   public static class IDs {
     // -- INTAKE
     public static final int INTAKE_PINION_ID = 16;
-    public static final int INTAKE_PASMOTOR_ID = 0;
+    public static final int INTAKE_PIVOT_ID = 0;
     public static final int INTAKE_LEADER_ID = 17;
     public static final int INTAKE_FOLLOWER_ID = 0;
 

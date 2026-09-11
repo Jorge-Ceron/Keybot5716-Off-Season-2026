@@ -12,7 +12,6 @@ import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
-
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularAcceleration;
 import edu.wpi.first.units.measure.AngularVelocity;
@@ -68,7 +67,6 @@ public class IntakePivotIOTalonFX implements IntakePivotIO {
     config.Audio.BeepOnBoot = true;
 
     motor.getConfigurator().apply(config);
-
 
     appliedVolts = motor.getMotorVoltage();
     positionIntake = motor.getRotorPosition();
