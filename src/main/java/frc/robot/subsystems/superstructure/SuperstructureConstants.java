@@ -8,8 +8,9 @@ public class SuperstructureConstants {
 
   public static class IDs {
     // -- INTAKE
-    public static final int INTAKE_PIVOT_ID = 16;
-    public static final int INTAKE_ROLLER_ID = 17;
+    public static final int INTAKE_PINION_ID = 16;
+    public static final int INTAKE_LEADER_ID = 17;
+    public static final int INTAKE_FOLLOWER_ID = 0;
 
     // -- SHOOTER
     public static final int SHOOTER_HOOD_ID = 31;
