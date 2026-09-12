@@ -22,9 +22,13 @@ public class SuperstructureConstants {
   }
 
   public static class IntakeConstants {
+    // -- PINION CONSTANTS
+    public static final double IN = 29.8;
+    public static final double OUT = -9.7;
+
     // -- PIVOT CONSTANTS
-    public static final double IN = -0.0;
-    public static final double OUT = -5.2;
+    public static final double pIN = 0.0;
+    public static final double pOUT = 0.0;
 
     // -- ROLLER CONSTANTS
     public static final double ZERO_RVOLTAGE = 0.0;
