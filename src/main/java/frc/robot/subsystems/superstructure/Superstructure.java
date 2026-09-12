@@ -10,6 +10,7 @@ import frc.robot.FieldConstants;
 import frc.robot.RobotState;
 import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.subsystems.intake.pinion.IntakePinionSubsystem;
+import frc.robot.subsystems.intake.pivot.*;
 import frc.robot.subsystems.intake.rollers.IntakeRollersSubsystem;
 import frc.robot.subsystems.shooter.ShootCalculator;
 import frc.robot.subsystems.shooter.hood.ShooterHoodSubsystem;
@@ -21,7 +22,8 @@ import org.littletonrobotics.junction.Logger;
 public class Superstructure extends SubsystemBase {
 
   private final DriveSubsystem driveSub;
-  private final IntakePinionSubsystem intakePivotSubsystem;
+  private final IntakePinionSubsystem intakePinionSub;
+  private final IntakePivotSubsystem intakePivotSub;
   private final IntakeRollersSubsystem intakeRollersSub;
   private final TransferSubsystem transferSub;
   private final ShooterHoodSubsystem shooterHoodSub;
@@ -39,7 +41,7 @@ public class Superstructure extends SubsystemBase {
 
   public Superstructure(
       DriveSubsystem driveSub,
-      IntakePinionSubsystem intakePivotSubsystem,
+      IntakePivotSubsystem intakePivotSub,
       IntakePinionSubsystem intakePinionSub,
       IntakeRollersSubsystem intakeRollersSub,
       TransferSubsystem transferSub,
@@ -48,7 +50,8 @@ public class Superstructure extends SubsystemBase {
       ShootCalculator shootCalculator,
       RobotState robotState) {
     this.driveSub = driveSub;
-    this.intakePivotSubsystem = intakePivotSubsystem;
+    this.intakePivotSub = intakePivotSub;
+    this.intakePinionSub = intakePinionSub; // CORREGIDO: Asignación faltante
     this.intakeRollersSub = intakeRollersSub;
     this.transferSub = transferSub;
     this.shooterHoodSub = shooterHoodSub;
@@ -114,7 +117,6 @@ public class Superstructure extends SubsystemBase {
 
   private void def() {
     driveSub.setState(DriveSubsystem.DesiredState.MANUAL_FIELD_DRIVE);
-    // intakePivotSubsystem.setDesiredState(IntakePivotSubsystem.DesiredState.OUT);
     intakeRollersSub.setDesiredState(IntakeRollersSubsystem.DesiredState.STOPPED);
     transferSub.setDesiredState(TransferSubsystem.DesiredState.STOPPED);
     shooterHoodSub.setDesiredState(ShooterHoodSubsystem.DesiredState.HOME);
@@ -123,7 +125,8 @@ public class Superstructure extends SubsystemBase {
 
   private void home() {
     driveSub.setState(DriveSubsystem.DesiredState.MANUAL_FIELD_DRIVE);
-    intakePivotSubsystem.setDesiredState(IntakePinionSubsystem.DesiredState.OUT);
+    // CORREGIDO: Usar intakePivotSub y su propio Enum (DesiredState.HOME o STOPPPED_PIVOT)
+    intakePivotSub.setDesiredState(IntakePivotSubsystem.DesiredState.STOPPPED_PIVOT);
     intakeRollersSub.setDesiredState(IntakeRollersSubsystem.DesiredState.STOPPED);
     transferSub.setDesiredState(TransferSubsystem.DesiredState.STOPPED);
     shooterHoodSub.setDesiredState(ShooterHoodSubsystem.DesiredState.HOME);
@@ -132,13 +135,14 @@ public class Superstructure extends SubsystemBase {
 
   private void intake() {
     driveSub.setState(DriveSubsystem.DesiredState.MANUAL_FIELD_DRIVE);
-    intakePivotSubsystem.setDesiredState(IntakePinionSubsystem.DesiredState.OUT);
+    // CORREGIDO: Usar intakePivotSub y su propio Enum (ej. pIN / OUT)
+    intakePivotSub.setDesiredState(IntakePivotSubsystem.DesiredState.pIN);
     transferSub.setDesiredState(TransferSubsystem.DesiredState.STOPPED);
     shooterHoodSub.setDesiredState(ShooterHoodSubsystem.DesiredState.STOPPED);
     shooterRollerSub.setDesiredState(ShooterRollersSubsystem.DesiredState.STOPPED);
-    // intakeRollersSub.setDesiredState(IntakeRollersSubsystem.DesiredState.FORWARD_ROLLERS);
 
-    if (intakePivotSubsystem.isOut()) {
+    // CORREGIDO: Método de verificación adaptado al Pivot
+    if (intakePivotSub.isOut()) {
       intakeRollersSub.setDesiredState(IntakeRollersSubsystem.DesiredState.FORWARD_ROLLERS);
     } else {
       intakeRollersSub.setDesiredState(IntakeRollersSubsystem.DesiredState.STOPPED);
@@ -154,27 +158,9 @@ public class Superstructure extends SubsystemBase {
     if (driveSub.isAlignedToPoint() && shooterRollerSub.atDesiredVelocity()) {
       transferSub.setDesiredState(TransferSubsystem.DesiredState.OSCILLATE_FORWARD);
     }
-
-    /*if (driveSub.isAlignedToPoint() && shooterRollerSub.atDesiredVelocity()) {
-      if (!timerStarted) {
-        scoreTimer.reset();
-        scoreTimer.start();
-        timerStarted = true;
-      }
-      if (scoreTimer.hasElapsed(2)) {
-        transferSub.setDesiredState(TransferSubsystem.DesiredState.OSCILLATE_FORWARD);
-      }
-    } else {
-      transferSub.setDesiredState(TransferSubsystem.DesiredState.STOPPED);
-      scoreTimer.stop();
-      timerStarted = false;
-    }*/
   }
 
   private void manualScore() {
-    // shooterHoodSub.setAngle(activePreset.hoodAngleDeg().get());
-    // shooterRollerSub.setCustom(activePreset.flywheelSpeed().get());
-    // intakeRollersSub.setDesiredState(IntakeRollersSubsystem.DesiredState.STOPPED);
     shooterHoodSub.setAngle(0.15);
     shooterRollerSub.setCustom(ShooterConstants.SCORE_RPS);
 
@@ -184,9 +170,6 @@ public class Superstructure extends SubsystemBase {
   }
 
   private void manualTaxi() {
-    // shooterHoodSub.setAngle(activePreset.hoodAngleDeg().get());
-    // shooterRollerSub.setCustom(activePreset.flywheelSpeed().get());
-    // intakeRollersSub.setDesiredState(IntakeRollersSubsystem.DesiredState.STOPPED);
     shooterHoodSub.setAngle(ShooterConstants.OUT_TEST);
     shooterRollerSub.setCustom(55.0);
 
@@ -212,19 +195,10 @@ public class Superstructure extends SubsystemBase {
   }
 
   public void presetShoot() {
-    // if (activePreset == null) return;
-    // var params = shootCalculator.getParameters();
-
     driveSub.setDesiredPointToLock(FieldConstants.getHubShootingPose().getTranslation());
 
     shooterHoodSub.setAngle(0.15);
     shooterRollerSub.setCustom(ShooterConstants.SCORE_RPS);
-
-    // shooterHoodSub.setAngle(activePreset.hoodAngleDeg().get());
-    // shooterRollerSub.setCustom(activePreset.flywheelSpeed().get());
-
-    // shooterHoodSub.setAngle(params.hoodAngle());
-    // shooterRollerSub.setCustom(params.rollersHoodVelocity());
 
     if (shooterRollerSub.atDesiredVelocity()) {
       transferSub.setDesiredState(TransferSubsystem.DesiredState.OSCILLATE_FORWARD);
@@ -241,8 +215,7 @@ public class Superstructure extends SubsystemBase {
   }
 
   public Command setCommand(SuperstructureStates superState) {
-    Command commandToReturn = new InstantCommand(() -> setDesiredState(superState));
-    return commandToReturn;
+    return new InstantCommand(() -> setDesiredState(superState));
   }
 
   public Command setCommand(SuperstructureStates taxiState, SuperstructureStates hubState) {

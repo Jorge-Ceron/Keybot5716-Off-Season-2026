@@ -19,6 +19,7 @@ import frc.lib.util.RobotCore;
 import frc.robot.Auto.*;
 import frc.robot.subsystems.drive.*;
 import frc.robot.subsystems.intake.pinion.*;
+import frc.robot.subsystems.intake.pivot.*;
 import frc.robot.subsystems.intake.rollers.*;
 import frc.robot.subsystems.shooter.ShootCalculator;
 import frc.robot.subsystems.shooter.hood.*;
@@ -48,8 +49,8 @@ public class RobotContainer implements RobotCore {
   }
 
   //  -- Intake
-  private IntakePinionSubsystem buildIntakePivot() {
-    return new IntakePinionSubsystem(new IntakePinionIOTalonFX(), robotState);
+  private IntakePivotSubsystem buildIntakePivot() {
+    return new IntakePivotSubsystem(new IntakePivotIOTalonFX(), robotState);
   }
 
   private IntakePinionSubsystem buildIntakePinion() {
@@ -135,7 +136,7 @@ public class RobotContainer implements RobotCore {
   private final ShooterRollersSubsystem shooterRollersSub = buildShooterRollers();
   private final TransferSubsystem transferSub = buildTransfer();
   private final IntakeRollersSubsystem intakeRollersSub = buildIntakeRollers();
-  private final IntakePinionSubsystem intakePivotSub = buildIntakePivot();
+  private final IntakePivotSubsystem intakePivotSub = buildIntakePivot();
   private final IntakePinionSubsystem intakePinionSub = buildIntakePinion();
   private final VisionSubsystem visionSub = buildVisionSubsystem();
   private final ShootCalculator shootCalculator = new ShootCalculator(robotState);
@@ -194,24 +195,22 @@ public class RobotContainer implements RobotCore {
         .x()
         .whileTrue(
             Commands.run(
-                () ->
-                    intakeRollersSub.setDesiredState(
-                        IntakeRollersSubsystem.DesiredState.FORWARD_ROLLERS)))
+                () -> intakePivotSub.setDesiredState(IntakePivotSubsystem.DesiredState.pOUT)))
         .onFalse(
             Commands.runOnce(
                 () ->
-                    intakeRollersSub.setDesiredState(IntakeRollersSubsystem.DesiredState.STOPPED)));
+                    intakePivotSub.setDesiredState(
+                        IntakePivotSubsystem.DesiredState.STOPPPED_PIVOT)));
     controller
         .y()
         .whileTrue(
             Commands.run(
-                () ->
-                    intakeRollersSub.setDesiredState(
-                        IntakeRollersSubsystem.DesiredState.REVERSE_ROLLERS)))
+                () -> intakePivotSub.setDesiredState(IntakePivotSubsystem.DesiredState.pIN)))
         .onFalse(
             Commands.runOnce(
                 () ->
-                    intakeRollersSub.setDesiredState(IntakeRollersSubsystem.DesiredState.STOPPED)));
+                    intakePivotSub.setDesiredState(
+                        IntakePivotSubsystem.DesiredState.STOPPPED_PIVOT)));
     controller
         .a()
         .onTrue(

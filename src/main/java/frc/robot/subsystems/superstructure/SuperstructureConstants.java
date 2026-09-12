@@ -9,7 +9,7 @@ public class SuperstructureConstants {
   public static class IDs {
     // -- INTAKE
     public static final int INTAKE_PINION_ID = 7;
-    public static final int INTAKE_PIVOT_ID = 0;
+    public static final int INTAKE_PIVOT_ID = 12;
     public static final int INTAKE_LEADER_ID = 21;
     public static final int INTAKE_FOLLOWER_ID = 0;
 
@@ -27,8 +27,8 @@ public class SuperstructureConstants {
     public static final double OUT = 29.0;
 
     // -- PIVOT CONSTANTS
-    public static final double pIN = 0.0;
-    public static final double pOUT = 0.0;
+    public static final double pIN = 1.0;
+    public static final double pOUT = -2.5;
 
     // -- ROLLER CONSTANTS
     public static final double ZERO_RVOLTAGE = 0.0;
