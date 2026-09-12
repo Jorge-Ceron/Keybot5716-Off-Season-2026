@@ -8,9 +8,9 @@ public class SuperstructureConstants {
 
   public static class IDs {
     // -- INTAKE
-    public static final int INTAKE_PINION_ID = 16;
+    public static final int INTAKE_PINION_ID = 7;
     public static final int INTAKE_PIVOT_ID = 0;
-    public static final int INTAKE_LEADER_ID = 17;
+    public static final int INTAKE_LEADER_ID = 21;
     public static final int INTAKE_FOLLOWER_ID = 0;
 
     // -- SHOOTER
@@ -23,8 +23,8 @@ public class SuperstructureConstants {
 
   public static class IntakeConstants {
     // -- PINION CONSTANTS
-    public static final double IN = 29.8;
-    public static final double OUT = -9.7;
+    public static final double IN = -9.7;
+    public static final double OUT = 29.0;
 
     // -- PIVOT CONSTANTS
     public static final double pIN = 0.0;

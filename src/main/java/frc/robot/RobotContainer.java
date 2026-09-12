@@ -52,6 +52,10 @@ public class RobotContainer implements RobotCore {
     return new IntakePinionSubsystem(new IntakePinionIOTalonFX(), robotState);
   }
 
+  private IntakePinionSubsystem buildIntakePinion() {
+    return new IntakePinionSubsystem(new IntakePinionIOTalonFX(), robotState);
+  }
+
   private IntakeRollersSubsystem buildIntakeRollers() {
     return new IntakeRollersSubsystem(new IntakeRollerIOTalonFX());
   }
@@ -74,6 +78,7 @@ public class RobotContainer implements RobotCore {
     return new Superstructure(
         driveSub,
         intakePivotSub,
+        intakePinionSub,
         intakeRollersSub,
         transferSub,
         shooterHoodSub,
@@ -131,6 +136,7 @@ public class RobotContainer implements RobotCore {
   private final TransferSubsystem transferSub = buildTransfer();
   private final IntakeRollersSubsystem intakeRollersSub = buildIntakeRollers();
   private final IntakePinionSubsystem intakePivotSub = buildIntakePivot();
+  private final IntakePinionSubsystem intakePinionSub = buildIntakePinion();
   private final VisionSubsystem visionSub = buildVisionSubsystem();
   private final ShootCalculator shootCalculator = new ShootCalculator(robotState);
 
@@ -210,12 +216,12 @@ public class RobotContainer implements RobotCore {
         .a()
         .onTrue(
             Commands.runOnce(
-                () -> intakePivotSub.setDesiredState(IntakePinionSubsystem.DesiredState.IN)));
+                () -> intakePinionSub.setDesiredState(IntakePinionSubsystem.DesiredState.IN)));
     controller
         .b()
         .onTrue(
             Commands.runOnce(
-                () -> intakePivotSub.setDesiredState(IntakePinionSubsystem.DesiredState.OUT)));
+                () -> intakePinionSub.setDesiredState(IntakePinionSubsystem.DesiredState.OUT)));
 
     controller.povLeft().onTrue(superstructure.setCommand(SuperstructureStates.HOME));
   }

@@ -40,6 +40,7 @@ public class Superstructure extends SubsystemBase {
   public Superstructure(
       DriveSubsystem driveSub,
       IntakePinionSubsystem intakePivotSubsystem,
+      IntakePinionSubsystem intakePinionSub,
       IntakeRollersSubsystem intakeRollersSub,
       TransferSubsystem transferSub,
       ShooterHoodSubsystem shooterHoodSub,
