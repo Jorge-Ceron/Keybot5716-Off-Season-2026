@@ -1,4 +1,4 @@
-package frc.robot.subsystems.intake.pivot;
+package frc.robot.subsystems.intake.pinion;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ProfiledPIDController;
@@ -11,10 +11,11 @@ import frc.robot.subsystems.superstructure.SuperstructureConstants;
 import frc.robot.subsystems.superstructure.SuperstructureConstants.IntakeConstants;
 import org.littletonrobotics.junction.Logger;
 
-public class IntakePivotSubsystem extends SubsystemBase {
-  private IntakePivotIO pivotIO;
+public class IntakePinionSubsystem extends SubsystemBase {
+  private IntakePinionIO pinionIO;
 
-  private final IntakePivotIOInputsAutoLogged pivotInputs = new IntakePivotIOInputsAutoLogged();
+  // Renamed the variable name to 'pinionInputs' from 'pinionInputsAutoLogged' for more readability.
+  private final IntakePinionIOInputsAutoLogged pinionInputs = new IntakePinionIOInputsAutoLogged();
 
   private TrapezoidProfile.Constraints profileConstraints =
       new TrapezoidProfile.Constraints(2.0, 2.0);
@@ -26,52 +27,52 @@ public class IntakePivotSubsystem extends SubsystemBase {
 
   private TrapezoidProfile.State goal = new TrapezoidProfile.State(0, 0);
 
-  private static final LoggedTunableNumber pivotVolts =
+  private static final LoggedTunableNumber pinionVolts =
       new LoggedTunableNumber("Intake/Pinion/PinionVolts", 2.0);
 
-  private IntakeState intakeState = IntakeState.STOPPING_PIVOT;
-  private DesiredState desiredState = DesiredState.STOPPPED_PIVOT;
+  private IntakeState intakeState = IntakeState.STOPPING_PINION;
+  private DesiredState desiredState = DesiredState.STOPPPED_PINION;
 
   private RobotState robotState;
 
   public enum DesiredState {
-    FORWARD_PIVOT,
-    REVERSE_PIVOT,
-    STOPPPED_PIVOT,
-    pIN,
-    pOUT
+    FORWARD_PINION,
+    REVERSE_PINION,
+    STOPPPED_PINION,
+    IN,
+    OUT
   }
 
   private enum IntakeState {
-    FORWARDING_PIVOT,
-    REVERSING_PIVOT,
-    STOPPING_PIVOT,
-    pINING,
-    pOUTING
+    FORWARDING_PINION,
+    REVERSING_PINION,
+    STOPPING_PINION,
+    INING,
+    OUTING
   }
 
-  public IntakePivotSubsystem(IntakePivotIO pivotIO, RobotState robotState) {
-    this.pivotIO = pivotIO;
+  public IntakePinionSubsystem(IntakePinionIO pinionIO, RobotState robotState) {
+    this.pinionIO = pinionIO;
     this.robotState = robotState;
     controller.setTolerance(0.02);
     DataProcessor.initDataProcessor(
         () -> {
-          synchronized (pivotInputs) {
-            pivotIO.updateInputs(pivotInputs);
+          synchronized (pinionInputs) {
+            pinionIO.updateInputs(pinionInputs);
           }
         },
-        pivotIO);
+        pinionIO);
   }
 
   @Override
   public void periodic() {
-    synchronized (pivotInputs) {
-      Logger.processInputs("Intake/Pinion/PinionInputs", pivotInputs);
+    synchronized (pinionInputs) {
+      Logger.processInputs("Intake/Pinion/PinionInputs", pinionInputs);
 
       Logger.recordOutput("Intake/Pinion/DesiredState", desiredState);
       Logger.recordOutput("Intake/Pinion/CurrentState", intakeState);
 
-      double rot = pivotInputs.position;
+      double rot = pinionInputs.position;
       double angleRad = rotationsToIntakeRadians(rot);
 
       robotState.setArmAngle(angleRad);
@@ -83,56 +84,56 @@ public class IntakePivotSubsystem extends SubsystemBase {
 
   private IntakeState setStateTransition() {
     return switch (desiredState) {
-      case FORWARD_PIVOT -> IntakeState.FORWARDING_PIVOT;
-      case REVERSE_PIVOT -> IntakeState.REVERSING_PIVOT;
-      case STOPPPED_PIVOT -> IntakeState.STOPPING_PIVOT;
-      case pIN -> IntakeState.pINING;
-      case pOUT -> IntakeState.pOUTING;
+      case FORWARD_PINION -> IntakeState.FORWARDING_PINION;
+      case REVERSE_PINION -> IntakeState.REVERSING_PINION;
+      case STOPPPED_PINION -> IntakeState.STOPPING_PINION;
+      case IN -> IntakeState.INING;
+      case OUT -> IntakeState.OUTING;
     };
   }
 
   private void applyStates() {
     switch (intakeState) {
-      case pINING:
-        setPosition(SuperstructureConstants.IntakeConstants.pIN);
+      case INING:
+        setPosition(SuperstructureConstants.IntakeConstants.IN);
         break;
 
-      case pOUTING:
-        setPosition(SuperstructureConstants.IntakeConstants.pOUT);
+      case OUTING:
+        setPosition(SuperstructureConstants.IntakeConstants.OUT);
         break;
 
-      case FORWARDING_PIVOT:
-        runPinion(pivotVolts.get());
+      case FORWARDING_PINION:
+        runPinion(pinionVolts.get());
         break;
 
-      case REVERSING_PIVOT:
-        runPinion(-pivotVolts.get());
+      case REVERSING_PINION:
+        runPinion(-pinionVolts.get());
         break;
 
-      case STOPPING_PIVOT:
+      case STOPPING_PINION:
         stopPinion();
         break;
     }
   }
 
-  public boolean ispOut() {
-    return MathUtil.isNear(IntakeConstants.pOUT, pivotInputs.position, 1.0);
+  public boolean isOut() {
+    return MathUtil.isNear(IntakeConstants.OUT, pinionInputs.position, 1.0);
   }
 
-  public boolean ispIn() {
-    return MathUtil.isNear(IntakeConstants.pIN, pivotInputs.position, 0.08);
+  public boolean isIn() {
+    return MathUtil.isNear(IntakeConstants.IN, pinionInputs.position, 0.08);
   }
 
   public void setPosition(double position) {
-    pivotIO.setPosition(position);
+    pinionIO.setPosition(position);
   }
 
   public void runPinion(double voltage) {
-    pivotIO.setVoltage(voltage);
+    pinionIO.setVoltage(voltage);
   }
 
   public void stopPinion() {
-    pivotIO.stopMotor();
+    pinionIO.stopMotor();
   }
 
   public void setDesiredState(DesiredState desiredState) {

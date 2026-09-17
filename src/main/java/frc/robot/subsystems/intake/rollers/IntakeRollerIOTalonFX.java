@@ -5,11 +5,13 @@ import static edu.wpi.first.units.Units.Volts;
 import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 import com.ctre.phoenix6.signals.InvertedValue;
+import com.ctre.phoenix6.signals.MotorAlignmentValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.units.measure.AngularAcceleration;
 import edu.wpi.first.units.measure.AngularVelocity;
@@ -20,7 +22,8 @@ import frc.lib.util.TalonFXSignalFrequencies;
 import frc.robot.subsystems.superstructure.SuperstructureConstants.IDs;
 
 public class IntakeRollerIOTalonFX implements IntakeRollersIO {
-  private final TalonFX motor;
+  private final TalonFX ILmotor;
+  private final TalonFX IFmotor;
   private final VoltageOut voltageOut = new VoltageOut(Volts.zero());
   private final VelocityVoltage velocityRequest = new VelocityVoltage(0);
 
@@ -34,7 +37,10 @@ public class IntakeRollerIOTalonFX implements IntakeRollersIO {
   private final StatusSignal<Temperature> tempCelsius;
 
   public IntakeRollerIOTalonFX() {
-    motor = new TalonFX(IDs.INTAKE_ROLLER_ID);
+    ILmotor = new TalonFX(IDs.INTAKE_LEADER_ID);
+    IFmotor = new TalonFX(IDs.INTAKE_FOLLOWER_ID);
+
+    IFmotor.setControl(new Follower(ILmotor.getDeviceID(), MotorAlignmentValue.Opposed));
 
     config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
     config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
@@ -62,14 +68,15 @@ public class IntakeRollerIOTalonFX implements IntakeRollersIO {
 
     config.Audio.BeepOnBoot = true;
 
-    motor.getConfigurator().apply(config);
+    ILmotor.getConfigurator().apply(config);
+    IFmotor.getConfigurator().apply(config);
 
-    appliedVolts = motor.getMotorVoltage();
-    velocityRollers = motor.getRotorVelocity();
-    accelerationRollers = motor.getAcceleration();
-    supplyCurrentRollers = motor.getSupplyCurrent();
-    statorCurrentRollers = motor.getStatorCurrent();
-    tempCelsius = motor.getDeviceTemp();
+    appliedVolts = ILmotor.getMotorVoltage();
+    velocityRollers = ILmotor.getRotorVelocity();
+    accelerationRollers = ILmotor.getAcceleration();
+    supplyCurrentRollers = ILmotor.getSupplyCurrent();
+    statorCurrentRollers = ILmotor.getStatorCurrent();
+    tempCelsius = ILmotor.getDeviceTemp();
 
     TalonFXSignalFrequencies.updateFrequencyTalonFX(
         appliedVolts,
@@ -79,23 +86,25 @@ public class IntakeRollerIOTalonFX implements IntakeRollersIO {
         statorCurrentRollers,
         tempCelsius);
 
-    motor.optimizeBusUtilization();
-    motor.setPosition(0.0);
+    ILmotor.optimizeBusUtilization();
+    IFmotor.optimizeBusUtilization();
+    ILmotor.setPosition(0.0);
+    IFmotor.setPosition(0.0);
   }
 
   @Override
   public void setVoltage(double voltage) {
-    motor.setControl(voltageOut.withOutput(voltage));
+    ILmotor.setControl(voltageOut.withOutput(voltage));
   }
 
   @Override
   public void setVelocity(double rps) {
-    motor.setControl(velocityRequest.withVelocity(rps));
+    ILmotor.setControl(velocityRequest.withVelocity(rps));
   }
 
   @Override
   public void stopMotor() {
-    motor.stopMotor();
+    ILmotor.stopMotor();
   }
 
   @Override

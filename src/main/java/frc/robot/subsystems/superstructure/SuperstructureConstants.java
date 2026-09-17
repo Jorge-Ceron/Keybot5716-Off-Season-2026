@@ -8,8 +8,10 @@ public class SuperstructureConstants {
 
   public static class IDs {
     // -- INTAKE
-    public static final int INTAKE_PIVOT_ID = 16;
-    public static final int INTAKE_ROLLER_ID = 17;
+    public static final int INTAKE_PINION_ID = 7;
+    public static final int INTAKE_PIVOT_ID = 12;
+    public static final int INTAKE_LEADER_ID = 21;
+    public static final int INTAKE_FOLLOWER_ID = 0;
 
     // -- SHOOTER
     public static final int SHOOTER_HOOD_ID = 31;
@@ -20,9 +22,13 @@ public class SuperstructureConstants {
   }
 
   public static class IntakeConstants {
+    // -- PINION CONSTANTS
+    public static final double IN = -9.7;
+    public static final double OUT = 29.0;
+
     // -- PIVOT CONSTANTS
-    public static final double IN = -0.0;
-    public static final double OUT = -5.2;
+    public static final double pIN = 1.0;
+    public static final double pOUT = -2.5;
 
     // -- ROLLER CONSTANTS
     public static final double ZERO_RVOLTAGE = 0.0;

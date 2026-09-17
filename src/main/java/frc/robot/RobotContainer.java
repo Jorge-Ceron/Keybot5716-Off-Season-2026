@@ -18,6 +18,7 @@ import frc.lib.team6328.LocalADStarAK;
 import frc.lib.util.RobotCore;
 import frc.robot.Auto.*;
 import frc.robot.subsystems.drive.*;
+import frc.robot.subsystems.intake.pinion.*;
 import frc.robot.subsystems.intake.pivot.*;
 import frc.robot.subsystems.intake.rollers.*;
 import frc.robot.subsystems.shooter.ShootCalculator;
@@ -52,6 +53,10 @@ public class RobotContainer implements RobotCore {
     return new IntakePivotSubsystem(new IntakePivotIOTalonFX(), robotState);
   }
 
+  private IntakePinionSubsystem buildIntakePinion() {
+    return new IntakePinionSubsystem(new IntakePinionIOTalonFX(), robotState);
+  }
+
   private IntakeRollersSubsystem buildIntakeRollers() {
     return new IntakeRollersSubsystem(new IntakeRollerIOTalonFX());
   }
@@ -74,6 +79,7 @@ public class RobotContainer implements RobotCore {
     return new Superstructure(
         driveSub,
         intakePivotSub,
+        intakePinionSub,
         intakeRollersSub,
         transferSub,
         shooterHoodSub,
@@ -131,6 +137,7 @@ public class RobotContainer implements RobotCore {
   private final TransferSubsystem transferSub = buildTransfer();
   private final IntakeRollersSubsystem intakeRollersSub = buildIntakeRollers();
   private final IntakePivotSubsystem intakePivotSub = buildIntakePivot();
+  private final IntakePinionSubsystem intakePinionSub = buildIntakePinion();
   private final VisionSubsystem visionSub = buildVisionSubsystem();
   private final ShootCalculator shootCalculator = new ShootCalculator(robotState);
 
@@ -186,37 +193,25 @@ public class RobotContainer implements RobotCore {
     // --- MANUAL CONTROLS
     controller
         .x()
-        .whileTrue(
-            Commands.run(
-                () ->
-                    intakeRollersSub.setDesiredState(
-                        IntakeRollersSubsystem.DesiredState.FORWARD_ROLLERS)))
-        .onFalse(
+        .onTrue(
             Commands.runOnce(
-                () ->
-                    intakeRollersSub.setDesiredState(IntakeRollersSubsystem.DesiredState.STOPPED)));
+                () -> intakePivotSub.setDesiredState(IntakePivotSubsystem.DesiredState.pOUT)));
     controller
         .y()
-        .whileTrue(
-            Commands.run(
-                () ->
-                    intakeRollersSub.setDesiredState(
-                        IntakeRollersSubsystem.DesiredState.REVERSE_ROLLERS)))
-        .onFalse(
+        .onTrue(
             Commands.runOnce(
-                () ->
-                    intakeRollersSub.setDesiredState(IntakeRollersSubsystem.DesiredState.STOPPED)));
+                () -> intakePivotSub.setDesiredState(IntakePivotSubsystem.DesiredState.pIN)));
     controller
         .a()
         .onTrue(
             Commands.runOnce(
-                () -> intakePivotSub.setDesiredState(IntakePivotSubsystem.DesiredState.IN)));
+                () -> intakePinionSub.setDesiredState(IntakePinionSubsystem.DesiredState.IN)));
+
     controller
         .b()
         .onTrue(
             Commands.runOnce(
-                () -> intakePivotSub.setDesiredState(IntakePivotSubsystem.DesiredState.OUT)));
-
+                () -> intakePinionSub.setDesiredState(IntakePinionSubsystem.DesiredState.OUT)));
     controller.povLeft().onTrue(superstructure.setCommand(SuperstructureStates.HOME));
   }
 

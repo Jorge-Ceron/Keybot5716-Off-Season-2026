@@ -1,4 +1,4 @@
-package frc.robot.subsystems.intake.pivot;
+package frc.robot.subsystems.intake.pinion;
 
 import static edu.wpi.first.units.Units.Meters;
 
@@ -6,7 +6,7 @@ import frc.robot.subsystems.shooter.rollers.ShooterRollersIOSim;
 import org.ironmaple.simulation.IntakeSimulation;
 import org.ironmaple.simulation.drivesims.AbstractDriveTrainSimulation;
 
-public class IntakePivotIOSim implements IntakePivotIO {
+public class IntakePinionIOSim implements IntakePinionIO {
 
   private final IntakeSimulation intakeSimulation;
   private ShooterRollersIOSim shooterRollersIOSim = new ShooterRollersIOSim();
@@ -16,7 +16,7 @@ public class IntakePivotIOSim implements IntakePivotIO {
    *
    * @param driveTrain Sirve para tener en cuenta en qué base estara este intake
    */
-  public IntakePivotIOSim(AbstractDriveTrainSimulation driveTrain) {
+  public IntakePinionIOSim(AbstractDriveTrainSimulation driveTrain) {
     this.intakeSimulation =
         IntakeSimulation.OverTheBumperIntake(
             // Este es el tipo de objeto que el intake va a recoger
@@ -87,8 +87,12 @@ public class IntakePivotIOSim implements IntakePivotIO {
    * ShooterIOSim.launchFuel(); //notify the simulated flywheels to launch a fuel (We need the //
    * shooter to be aware of this) }
    */
-  @Override
-  public void updateInputs(IntakePivotIOInputs inputs) {}
+  // @Override
+  // @Override
+  // public void updateInputs(IntakePinionIOInputs inputs) {
+  // Aquí va la implementación del método, que puede hacer lo siguiente:
+  // ... inputs.setSomeValue(someValue);
+  // }
 
   @Override
   public void setVoltage(double voltage) {}
@@ -98,4 +102,10 @@ public class IntakePivotIOSim implements IntakePivotIO {
 
   @Override
   public void setPosition(double position) {}
+
+  @Override
+  public void updateInputs(IntakePinionIOInputs inputs) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'updateInputs'");
+  }
 }

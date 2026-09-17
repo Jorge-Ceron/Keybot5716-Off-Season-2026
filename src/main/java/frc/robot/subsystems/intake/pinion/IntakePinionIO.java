@@ -1,12 +1,11 @@
-package frc.robot.subsystems.intake.pivot;
+package frc.robot.subsystems.intake.pinion;
 
 import frc.lib.util.DataProcessor;
 import org.littletonrobotics.junction.AutoLog;
 
-public interface IntakePivotIO extends DataProcessor.IODataRefresher {
-
+public interface IntakePinionIO extends DataProcessor.IODataRefresher {
   @AutoLog
-  public class IntakePivotIOInputs {
+  public class IntakePinionIOInputs {
     public boolean motorConnected = false;
     public double appliedVolts = 0.0;
     public double position = 0.0;
@@ -17,7 +16,7 @@ public interface IntakePivotIO extends DataProcessor.IODataRefresher {
     public double tempCelcius = 0.0;
   }
 
-  void updateInputs(IntakePivotIOInputs inputs);
+  void updateInputs(IntakePinionIOInputs inputs);
 
   void setVoltage(double voltage);
 
