@@ -142,7 +142,7 @@ public class Superstructure extends SubsystemBase {
     shooterRollerSub.setDesiredState(ShooterRollersSubsystem.DesiredState.STOPPED);
 
     // CORREGIDO: Método de verificación adaptado al Pivot
-    if (intakePivotSub.isOut()) {
+    if (intakePivotSub.ispOut() && intakePinionSub.isOut()) {
       intakeRollersSub.setDesiredState(IntakeRollersSubsystem.DesiredState.FORWARD_ROLLERS);
     } else {
       intakeRollersSub.setDesiredState(IntakeRollersSubsystem.DesiredState.STOPPED);

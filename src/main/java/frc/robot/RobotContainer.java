@@ -193,35 +193,25 @@ public class RobotContainer implements RobotCore {
     // --- MANUAL CONTROLS
     controller
         .x()
-        .whileTrue(
-            Commands.run(
-                () -> intakePivotSub.setDesiredState(IntakePivotSubsystem.DesiredState.pOUT)))
-        .onFalse(
+        .onTrue(
             Commands.runOnce(
-                () ->
-                    intakePivotSub.setDesiredState(
-                        IntakePivotSubsystem.DesiredState.STOPPPED_PIVOT)));
+                () -> intakePivotSub.setDesiredState(IntakePivotSubsystem.DesiredState.pOUT)));
     controller
         .y()
-        .whileTrue(
-            Commands.run(
-                () -> intakePivotSub.setDesiredState(IntakePivotSubsystem.DesiredState.pIN)))
-        .onFalse(
+        .onTrue(
             Commands.runOnce(
-                () ->
-                    intakePivotSub.setDesiredState(
-                        IntakePivotSubsystem.DesiredState.STOPPPED_PIVOT)));
+                () -> intakePivotSub.setDesiredState(IntakePivotSubsystem.DesiredState.pIN)));
     controller
         .a()
         .onTrue(
             Commands.runOnce(
                 () -> intakePinionSub.setDesiredState(IntakePinionSubsystem.DesiredState.IN)));
+
     controller
         .b()
         .onTrue(
             Commands.runOnce(
                 () -> intakePinionSub.setDesiredState(IntakePinionSubsystem.DesiredState.OUT)));
-
     controller.povLeft().onTrue(superstructure.setCommand(SuperstructureStates.HOME));
   }
 

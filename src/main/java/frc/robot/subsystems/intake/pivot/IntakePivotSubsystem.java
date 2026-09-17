@@ -115,12 +115,12 @@ public class IntakePivotSubsystem extends SubsystemBase {
     }
   }
 
-  public boolean isOut() {
-    return MathUtil.isNear(IntakeConstants.OUT, pivotInputs.position, 1.0);
+  public boolean ispOut() {
+    return MathUtil.isNear(IntakeConstants.pOUT, pivotInputs.position, 1.0);
   }
 
-  public boolean isIn() {
-    return MathUtil.isNear(IntakeConstants.IN, pivotInputs.position, 0.08);
+  public boolean ispIn() {
+    return MathUtil.isNear(IntakeConstants.pIN, pivotInputs.position, 0.08);
   }
 
   public void setPosition(double position) {
