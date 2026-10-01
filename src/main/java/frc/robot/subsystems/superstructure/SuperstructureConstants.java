@@ -14,11 +14,12 @@ public class SuperstructureConstants {
     public static final int INTAKE_FOLLOWER_ID = 0;
 
     // -- SHOOTER
-    public static final int SHOOTER_HOOD_ID = 31;
-    public static final int SHOOTER_ROLLERS_ID = 30;
+    // public static final int SHOOTER_HOOD_ID = 31;
+    public static final int SHOOTER_ROLLERS_ID1 = 23;
+    public static final int SHOOTER_ROLLERS_ID2 = 45;
 
     // -- TRANSFER
-    public static final int TRANSFER_ID = 22;
+    public static final int TRANSFER_ID = 30;
   }
 
   public static class IntakeConstants {
@@ -42,7 +43,7 @@ public class SuperstructureConstants {
 
   public static class ShooterConstants {
     public static final double TAXI_RPS = 55.0;
-    public static final double SCORE_RPS = 48.0;
+    public static final double SCORE_RPS = 100.0;
 
     public static final double HOME = 0.2;
     public static final double IN_TEST = 0.2;
