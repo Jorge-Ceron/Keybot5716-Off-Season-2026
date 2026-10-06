@@ -5,11 +5,13 @@ import static edu.wpi.first.units.Units.Volts;
 import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 import com.ctre.phoenix6.signals.InvertedValue;
+import com.ctre.phoenix6.signals.MotorAlignmentValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.units.measure.AngularAcceleration;
 import edu.wpi.first.units.measure.AngularVelocity;
@@ -20,7 +22,8 @@ import frc.lib.util.TalonFXSignalFrequencies;
 import frc.robot.subsystems.superstructure.SuperstructureConstants.IDs;
 
 public class ShooterRollersIOTalonFX implements ShooterRollersIO {
-  private final TalonFX motor;
+  private final TalonFX leaderMotor;
+  private final TalonFX followerMotor;
 
   private final VoltageOut voltageOut = new VoltageOut(Volts.zero());
   private final VelocityVoltage velocityRequest = new VelocityVoltage(0);
@@ -35,7 +38,8 @@ public class ShooterRollersIOTalonFX implements ShooterRollersIO {
   private final StatusSignal<Temperature> tempCelsius;
 
   public ShooterRollersIOTalonFX() {
-    motor = new TalonFX(IDs.SHOOTER_ROLLERS_ID);
+    leaderMotor = new TalonFX(IDs.SHOOTER_ROLLERS_ID1);
+    followerMotor = new TalonFX(IDs.SHOOTER_ROLLERS_ID2);
 
     config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
     config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
@@ -63,14 +67,22 @@ public class ShooterRollersIOTalonFX implements ShooterRollersIO {
 
     config.Audio.BeepOnBoot = true;
 
-    motor.getConfigurator().apply(config);
+    // Aplicar la misma configuración a ambos motores
+    leaderMotor.getConfigurator().apply(config);
+    followerMotor.getConfigurator().apply(config);
 
-    appliedVolts = motor.getMotorVoltage();
-    velocityRollers = motor.getRotorVelocity();
-    accelerationRollers = motor.getAcceleration();
-    supplyCurrentRollers = motor.getSupplyCurrent();
-    statorCurrentRollers = motor.getStatorCurrent();
-    tempCelsius = motor.getDeviceTemp();
+    // Configurar el segundo motor para seguir al motor principal
+    // Cambia "opposeMasterDirection" a true si mecánicamente el segundo motor gira al revés
+    // respecto al primero
+    boolean opposeMasterDirection = false;
+    followerMotor.setControl(new Follower(leaderMotor.getDeviceID(), MotorAlignmentValue.Aligned));
+
+    appliedVolts = leaderMotor.getMotorVoltage();
+    velocityRollers = leaderMotor.getRotorVelocity();
+    accelerationRollers = leaderMotor.getAcceleration();
+    supplyCurrentRollers = leaderMotor.getSupplyCurrent();
+    statorCurrentRollers = leaderMotor.getStatorCurrent();
+    tempCelsius = leaderMotor.getDeviceTemp();
 
     TalonFXSignalFrequencies.updateFrequencyTalonFX(
         appliedVolts,
@@ -80,27 +92,31 @@ public class ShooterRollersIOTalonFX implements ShooterRollersIO {
         statorCurrentRollers,
         tempCelsius);
 
-    motor.optimizeBusUtilization();
-    motor.setPosition(0.0);
+    leaderMotor.optimizeBusUtilization();
+    followerMotor.optimizeBusUtilization();
+
+    leaderMotor.setPosition(0.0);
+    followerMotor.setPosition(0.0);
   }
 
   public void setPosition(double position) {
-    motor.setPosition(position);
+    leaderMotor.setPosition(position);
+    followerMotor.setPosition(position);
   }
 
   @Override
   public void setVoltage(double voltage) {
-    motor.setControl(voltageOut.withOutput(voltage));
+    leaderMotor.setControl(voltageOut.withOutput(voltage));
   }
 
   @Override
   public void setVelocity(double rps) {
-    motor.setControl(velocityRequest.withVelocity(rps));
+    leaderMotor.setControl(velocityRequest.withVelocity(rps));
   }
 
   @Override
   public void stopMotor() {
-    motor.stopMotor();
+    leaderMotor.stopMotor();
   }
 
   @Override

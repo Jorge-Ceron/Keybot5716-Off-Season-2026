@@ -22,7 +22,6 @@ import frc.robot.subsystems.intake.pinion.*;
 import frc.robot.subsystems.intake.pivot.*;
 import frc.robot.subsystems.intake.rollers.*;
 import frc.robot.subsystems.shooter.ShootCalculator;
-import frc.robot.subsystems.shooter.hood.*;
 import frc.robot.subsystems.shooter.rollers.*;
 import frc.robot.subsystems.superstructure.Superstructure;
 import frc.robot.subsystems.superstructure.SuperstructureStates;
@@ -62,9 +61,6 @@ public class RobotContainer implements RobotCore {
   }
 
   // -- Shooter
-  private ShooterHoodSubsystem buildShooterHood() {
-    return new ShooterHoodSubsystem(new ShooterHoodIOTalonFX());
-  }
 
   private ShooterRollersSubsystem buildShooterRollers() {
     return new ShooterRollersSubsystem(new ShooterRollersIOTalonFX());
@@ -82,7 +78,6 @@ public class RobotContainer implements RobotCore {
         intakePinionSub,
         intakeRollersSub,
         transferSub,
-        shooterHoodSub,
         shooterRollersSub,
         shootCalculator,
         robotState);
@@ -132,7 +127,6 @@ public class RobotContainer implements RobotCore {
 
   // -- Subsystems
   private final DriveSubsystem driveSub = buildDriveSubsystem();
-  private final ShooterHoodSubsystem shooterHoodSub = buildShooterHood();
   private final ShooterRollersSubsystem shooterRollersSub = buildShooterRollers();
   private final TransferSubsystem transferSub = buildTransfer();
   private final IntakeRollersSubsystem intakeRollersSub = buildIntakeRollers();
@@ -181,10 +175,10 @@ public class RobotContainer implements RobotCore {
         .leftBumper()
         .onTrue(superstructure.setCommand(SuperstructureStates.MANUAL_TAXI))
         .onFalse(superstructure.setCommand(SuperstructureStates.DEFAULT));
-    controller
-        .rightTrigger()
-        .onTrue(superstructure.setCommand(SuperstructureStates.TAXI, ShootCalculator.hubPreset))
-        .onFalse(superstructure.setCommand(SuperstructureStates.DEFAULT));
+    // controller
+    //  .rightTrigger()
+    //  .onTrue(superstructure.setCommand(SuperstructureStates.TAXI, ShootCalculator.hubPreset))
+    //  .onFalse(superstructure.setCommand(SuperstructureStates.DEFAULT));
     controller
         .leftTrigger()
         .onTrue(superstructure.setCommand(SuperstructureStates.INTAKE))
@@ -212,6 +206,15 @@ public class RobotContainer implements RobotCore {
         .onTrue(
             Commands.runOnce(
                 () -> intakePinionSub.setDesiredState(IntakePinionSubsystem.DesiredState.OUT)));
+    /*
+    controller
+        .rightTrigger()
+        .onTrue(
+          Commands.run(
+            () -> intakePinionSub.setDesiredState(IntakePinionSubsystem.DesiredState.IN))
+            .andThen(
+              () -> transferSub.setDesiredState(TransferSubsystem.DesiredState.FORWARD)).andThen( () -> shooterRollersSub.setDesiredState(ShooterRollersSubsystem.DesiredState.FORWARD_ROLLERS)))
+        .onFalse(getAutonomousCommand());*/
     controller.povLeft().onTrue(superstructure.setCommand(SuperstructureStates.HOME));
   }
 
