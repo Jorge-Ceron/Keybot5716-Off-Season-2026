@@ -16,7 +16,8 @@ public class SuperstructureConstants {
     // -- SHOOTER
     // public static final int SHOOTER_HOOD_ID = 31;
     public static final int SHOOTER_ROLLERS_ID1 = 23;
-    public static final int SHOOTER_ROLLERS_ID2 = 45;
+    public static final int SHOOTER_ROLLERS_ID2 = 24;
+    public static final int SHOOTER_ROLLERS_ID3 = 25;
 
     // -- TRANSFER
     public static final int TRANSFER_ID = 30;
