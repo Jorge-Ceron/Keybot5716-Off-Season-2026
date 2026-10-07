@@ -19,16 +19,12 @@ import frc.robot.subsystems.superstructure.SuperstructureConstants.ShooterConsta
 import org.littletonrobotics.junction.Logger;
 
 public class ShootCalculator {
-  private double lastHoodAngle = Double.NaN;
   private RobotState robotState;
   private Rotation2d lastDriveAngle;
-
-  private double hoodAngleOffsetDeg = 0.0;
 
   private static final Bounds towerBound =
       new Bounds(0, Units.inchesToMeters(46), Units.inchesToMeters(129), Units.inchesToMeters(168));
 
-  private final LinearFilter hoodAngleFilter = LinearFilter.movingAverage((int) (0.1 / 0.02));
   private final LinearFilter driveAngleFilter = LinearFilter.movingAverage((int) (0.1 / 0.02));
 
   public static final Translation3d topCenterPoint =
@@ -44,19 +40,19 @@ public class ShootCalculator {
           topCenterPoint.getX() - FieldConstants.FIELD_WIDTH / 2.0,
           FieldConstants.FIELD_WIDTH / 2.0 + FieldConstants.FIELD_WIDTH / 2.0);
 
+  // Se removió hoodAngle de los parámetros de disparo
   public record shootParameters(
       boolean isValid,
       Rotation2d driveAngle,
       double driveVelocity,
-      double hoodAngle,
-      double rollersHoodVelocity,
+      double rollersSpeed,
       double distance,
       double distanceNoLook,
-      double timeOffFlight,
+      double timeOfFlight,
       boolean passing) {}
 
-  public static record LaunchPreset(
-      LoggedTunableNumber hoodAngleDeg, LoggedTunableNumber flywheelSpeed) {}
+  // Se simplificó el LaunchPreset al no requerir ángulo de hood
+  public static record LaunchPreset(LoggedTunableNumber flywheelSpeed) {}
 
   private shootParameters lParameters = null;
 
@@ -76,23 +72,18 @@ public class ShootCalculator {
           nearRightCorner.getY(),
           nearLeftCorner.getY());
 
-  // Passed Trench Maps
-  private static final InterpolatingDoubleTreeMap passedHoodAngleMap =
-      new InterpolatingDoubleTreeMap();
-
+  // Passed Trench Maps (Solo velocidad y tiempo de vuelo)
   private static final InterpolatingDoubleTreeMap passedRollersSpeedMap =
       new InterpolatingDoubleTreeMap();
 
-  private static final InterpolatingDoubleTreeMap passedTimeOffLightMap =
+  private static final InterpolatingDoubleTreeMap passedTimeOfFlightMap =
       new InterpolatingDoubleTreeMap();
 
-  // Launching Maps
-  private static final InterpolatingDoubleTreeMap hoodAngleMap = new InterpolatingDoubleTreeMap();
-
+  // Launching Maps (Solo velocidad y tiempo de vuelo)
   private static final InterpolatingDoubleTreeMap rollersSpeedMap =
       new InterpolatingDoubleTreeMap();
 
-  private static final InterpolatingDoubleTreeMap TimeOffLightMap =
+  private static final InterpolatingDoubleTreeMap timeOfFlightMap =
       new InterpolatingDoubleTreeMap();
 
   public ShootCalculator(RobotState robotState) {
@@ -105,6 +96,7 @@ public class ShootCalculator {
   public static final double trenchPresetDistance = 3.03;
   public static final double outpostPresetDistance = 4.84;
   public static final double passingPresetDistance = 1.0;
+
   public static final LaunchPreset passingPreset;
   public static final LaunchPreset hubPreset;
   public static final LaunchPreset towerPreset;
@@ -118,41 +110,25 @@ public class ShootCalculator {
     passingMaxDistance = 7.5;
     phaseDelay = 0.25;
 
-    hoodAngleMap.put(2.18, 0.0);
-    hoodAngleMap.put(2.86, 0.0);
-    hoodAngleMap.put(3.72, 0.1);
-    hoodAngleMap.put(5.07, 0.25);
-
+    // Tabla de Calibración: Distancia (m) vs Velocidad Flywheel (RPM / RPS)
     rollersSpeedMap.put(2.18, 50.0);
-    rollersSpeedMap.put(2.86, 54.0); // 54.0
+    rollersSpeedMap.put(2.86, 54.0);
     rollersSpeedMap.put(3.72, 63.0);
     rollersSpeedMap.put(5.07, 83.0);
 
-    TimeOffLightMap.put(2.18, 0.78);
-    TimeOffLightMap.put(2.86, 1.055);
-    TimeOffLightMap.put(3.72, 1.12);
-    TimeOffLightMap.put(5.07, 1.725);
+    // Tabla de Calibración: Distancia (m) vs Tiempo de Vuelo (s)
+    timeOfFlightMap.put(2.18, 0.78);
+    timeOfFlightMap.put(2.86, 1.055);
+    timeOfFlightMap.put(3.72, 1.12);
+    timeOfFlightMap.put(5.07, 1.725);
 
-    passedHoodAngleMap.put(0.96, 0.0);
-    passedHoodAngleMap.put(0.96, 0.0);
-    passedHoodAngleMap.put(0.96, 0.0);
-    passedHoodAngleMap.put(0.96, 0.0);
+    // Tablas de Passing / Pase
+    passedRollersSpeedMap.put(0.96, 0.0);
+    passedTimeOfFlightMap.put(0.96, 0.5);
 
-    passedRollersSpeedMap.put(0.96, 0.0);
-    passedRollersSpeedMap.put(0.96, 0.0);
-    passedRollersSpeedMap.put(0.96, 0.0);
-    passedRollersSpeedMap.put(0.96, 0.0);
-
-    passedTimeOffLightMap.put(0.96, 0.5);
-    passedTimeOffLightMap.put(0.96, 0.5);
-    passedTimeOffLightMap.put(0.96, 0.5);
-    passedTimeOffLightMap.put(0.96, 0.5);
-
+    // Inicialización de Presets limpios
     passingPreset =
         new LaunchPreset(
-            new LoggedTunableNumber(
-                "ShootCalculator/Presets/Passed/HoodAngle",
-                hoodAngleMap.get(passingPresetDistance)),
             new LoggedTunableNumber(
                 "ShootCalculator/Presets/Passed/RollersTestSpeed",
                 rollersSpeedMap.get(passingPresetDistance)));
@@ -160,15 +136,11 @@ public class ShootCalculator {
     hubPreset =
         new LaunchPreset(
             new LoggedTunableNumber(
-                "ShootCalculator/Presets/Hub/HoodAngle", hoodAngleMap.get(hubPresetDistance)),
-            new LoggedTunableNumber(
                 "ShootCalculator/Presets/Hub/RollersSpeed",
                 rollersSpeedMap.get(hubPresetDistance)));
 
     towerPreset =
         new LaunchPreset(
-            new LoggedTunableNumber(
-                "ShootCalculator/Presets/Tower/HoodAngle", hoodAngleMap.get(towerPresetDistance)),
             new LoggedTunableNumber(
                 "ShootCalculator/Presets/Tower/RollersSpeed",
                 rollersSpeedMap.get(towerPresetDistance)));
@@ -176,16 +148,11 @@ public class ShootCalculator {
     trenchPreset =
         new LaunchPreset(
             new LoggedTunableNumber(
-                "ShootCalculator/Presets/Trench/HoodAngle", hoodAngleMap.get(trenchPresetDistance)),
-            new LoggedTunableNumber(
                 "ShootCalculator/Presets/Trench/RollersSpeed",
                 rollersSpeedMap.get(trenchPresetDistance)));
 
     outpostPreset =
         new LaunchPreset(
-            new LoggedTunableNumber(
-                "ShootCalculator/Presets/Outpost/HoodAngle",
-                hoodAngleMap.get(outpostPresetDistance)),
             new LoggedTunableNumber(
                 "ShootCalculator/Presets/Outpost/RollersSpeed",
                 rollersSpeedMap.get(outpostPresetDistance)));
@@ -217,21 +184,21 @@ public class ShootCalculator {
             : transformVelocity(
                 robotVelocity, ShooterConstants.robotToLauncher.getTranslation(), robotAngle);
 
-    double timeOffFlight =
+    double timeOfFlight =
         passed
-            ? passedTimeOffLightMap.get(launcherToTargetDistance)
-            : TimeOffLightMap.get(launcherToTargetDistance);
+            ? passedTimeOfFlightMap.get(launcherToTargetDistance)
+            : timeOfFlightMap.get(launcherToTargetDistance);
     Pose2d lookaheadPose = launcherPos;
     double lookAheadLauncherToTargetDistance = launcherToTargetDistance;
 
     for (int i = 0; i < 20; i++) {
-      timeOffFlight =
+      timeOfFlight =
           passed
-              ? passedTimeOffLightMap.get(lookAheadLauncherToTargetDistance)
-              : TimeOffLightMap.get(lookAheadLauncherToTargetDistance);
-      double offSetX = launcherVelocity.vxMetersPerSecond * timeOffFlight;
+              ? passedTimeOfFlightMap.get(lookAheadLauncherToTargetDistance)
+              : timeOfFlightMap.get(lookAheadLauncherToTargetDistance);
+      double offSetX = launcherVelocity.vxMetersPerSecond * timeOfFlight;
+      double offSetY = launcherVelocity.vyMetersPerSecond * timeOfFlight;
 
-      double offSetY = launcherVelocity.vyMetersPerSecond * timeOffFlight;
       lookaheadPose =
           new Pose2d(
               lookaheadPose.getTranslation().plus(new Translation2d(offSetX, offSetY)),
@@ -243,20 +210,10 @@ public class ShootCalculator {
         lookaheadPose.transformBy(ShooterConstants.robotToLauncher.inverse());
     Rotation2d driveAngle = target.minus(lookAheadRobotPose.getTranslation()).getAngle();
 
-    // Calculate the remaining parameters
-    double hoodAngle =
-        passed
-            ? passedHoodAngleMap.get(lookAheadLauncherToTargetDistance)
-            : hoodAngleMap.get(lookAheadLauncherToTargetDistance);
-
     if (lastDriveAngle == null) {
       lastDriveAngle = driveAngle;
     }
-    if (Double.isNaN(lastHoodAngle)) {
-      lastHoodAngle = hoodAngle;
-    }
-    double hoodVelocity = hoodAngleFilter.calculate(hoodAngle - lastHoodAngle) / 0.02;
-    lastHoodAngle = hoodAngle;
+    
     double driveVelocity =
         driveAngleFilter.calculate(driveAngle.minus(lastDriveAngle).getRadians()) / 0.02;
     lastDriveAngle = driveAngle;
@@ -279,11 +236,10 @@ public class ShootCalculator {
                 && lookAheadLauncherToTargetDistance <= (passed ? passingMaxDistance : maxDistance),
             driveAngle,
             driveVelocity,
-            hoodAngle,
             rollersSpeed,
             launcherToTargetDistance,
             lookAheadLauncherToTargetDistance,
-            timeOffFlight,
+            timeOfFlight,
             passed);
 
     Logger.recordOutput("ShootCalculator/TargetPose", new Pose2d(target, Rotation2d.kZero));
@@ -334,7 +290,6 @@ public class ShootCalculator {
     double flippedY = apply(robotState.getLatestFieldToRobot().getValue().getY(), robotState);
     boolean mirror = flippedY > FieldConstants.FIELD_LENGTH / 2.0;
 
-    // Fixed passing target
     Translation2d flippedGoalTranslation =
         apply(
             new Translation2d(
@@ -362,7 +317,6 @@ public class ShootCalculator {
   }
 
   public record Bounds(double minX, double maxX, double minY, double maxY) {
-    /** Whether the translation is contained within the bounds. */
     public boolean contains(Translation2d translation) {
       return translation.getX() >= minX()
           && translation.getX() <= maxX()
@@ -370,7 +324,6 @@ public class ShootCalculator {
           && translation.getY() <= maxY();
     }
 
-    /** Clamps the translation to the bounds. */
     public Translation2d clamp(Translation2d translation) {
       return new Translation2d(
           MathUtil.clamp(translation.getX(), minX(), maxX()),
