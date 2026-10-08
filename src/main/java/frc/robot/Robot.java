@@ -37,7 +37,7 @@ public class Robot extends LoggedRobot {
 
   private RobotCore buildRobotCore() {
     if (RobotBase.isSimulation()) {
-      return new RobotContainerSim();
+      return new RobotContainer();
     } else {
       return new RobotContainer();
     }
@@ -193,19 +193,5 @@ public class Robot extends LoggedRobot {
     // robotContainer.getDriveSubsystem().resetOdometry(new Pose2d(0, 0, new Rotation2d()));
 
     // AIRobotSimulated.startOpponentRobotSimulations();
-  }
-
-  /** This function is called periodically whilst in simulation. */
-  @Override
-  public void simulationPeriodic() {
-    Logger.recordOutput(
-        "FieldSimulation/Fuel", SimulatedArena.getInstance().getGamePiecesArrayByType("Fuel"));
-    if (robotContainer instanceof RobotContainerSim) {
-      RobotContainerSim simContainer = (RobotContainerSim) robotContainer;
-
-      if (simContainer.getSimRobotState() != null) {
-        simContainer.getSimRobotState().updateSim();
-      }
-    }
   }
 }

@@ -22,7 +22,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.lib.util.DataProcessor;
 import frc.robot.RobotState;
-import frc.robot.simulation.MapleSimSwerveDrivetrain;
 import frc.robot.subsystems.vision.VisionPoseEstimateInField;
 import java.util.function.Supplier;
 import org.littletonrobotics.junction.Logger;
@@ -360,12 +359,5 @@ public class DriveSubsystem extends SubsystemBase {
         ChassisSpeeds.fromFieldRelativeSpeeds(
             new ChassisSpeeds(xVelocity, yVelocity, -angularVelocity), inputs.Pose.getRotation()),
         inputs.Pose.getRotation().plus(skewCompensationFactor));
-  }
-
-  public MapleSimSwerveDrivetrain getMapleSimDrive() {
-    if (io instanceof DriveIOSim) {
-      return ((DriveIOSim) io).getSimSwerve();
-    }
-    return null;
   }
 }

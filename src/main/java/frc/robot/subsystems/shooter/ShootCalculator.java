@@ -213,7 +213,7 @@ public class ShootCalculator {
     if (lastDriveAngle == null) {
       lastDriveAngle = driveAngle;
     }
-    
+
     double driveVelocity =
         driveAngleFilter.calculate(driveAngle.minus(lastDriveAngle).getRadians()) / 0.02;
     lastDriveAngle = driveAngle;
