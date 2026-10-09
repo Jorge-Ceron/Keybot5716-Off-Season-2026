@@ -24,7 +24,6 @@ import frc.robot.subsystems.superstructure.SuperstructureConstants.IDs;
 public class ShooterRollersIOTalonFX implements ShooterRollersIO {
   private final TalonFX leaderMotor;
   private final TalonFX followerMotor;
-  private final TalonFX followerMotor2;
 
   private final VoltageOut voltageOut = new VoltageOut(Volts.zero());
   private final VelocityVoltage velocityRequest = new VelocityVoltage(0);
@@ -39,12 +38,11 @@ public class ShooterRollersIOTalonFX implements ShooterRollersIO {
   private final StatusSignal<Temperature> tempCelsius;
 
   public ShooterRollersIOTalonFX() {
-    leaderMotor = new TalonFX(IDs.SHOOTER_ROLLERS_ID1);
-    followerMotor = new TalonFX(IDs.SHOOTER_ROLLERS_ID2);
-    followerMotor2 = new TalonFX(IDs.SHOOTER_ROLLERS_ID3);
+    leaderMotor = new TalonFX(IDs.SHOOTER_LEADER_ID);
+    followerMotor = new TalonFX(IDs.SHOOTER_FOLLOWER1_ID);
 
     config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
-    config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
+    config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
     config.MotorOutput.DutyCycleNeutralDeadband = 0.04;
     config.MotorOutput.PeakForwardDutyCycle = 1.0;
     config.MotorOutput.PeakReverseDutyCycle = -1.0;
@@ -72,11 +70,9 @@ public class ShooterRollersIOTalonFX implements ShooterRollersIO {
     // Aplicar la misma configuración a ambos motores
     leaderMotor.getConfigurator().apply(config);
     followerMotor.getConfigurator().apply(config);
-    followerMotor2.getConfigurator().apply(config);
 
     // Configurar el segundo motor para seguir al motor principal
-    followerMotor.setControl(new Follower(leaderMotor.getDeviceID(), MotorAlignmentValue.Aligned));
-    followerMotor2.setControl(new Follower(leaderMotor.getDeviceID(), MotorAlignmentValue.Aligned));
+    followerMotor.setControl(new Follower(leaderMotor.getDeviceID(), MotorAlignmentValue.Opposed));
 
     appliedVolts = leaderMotor.getMotorVoltage();
     velocityRollers = leaderMotor.getRotorVelocity();
@@ -95,11 +91,9 @@ public class ShooterRollersIOTalonFX implements ShooterRollersIO {
 
     leaderMotor.optimizeBusUtilization();
     followerMotor.optimizeBusUtilization();
-    followerMotor2.optimizeBusUtilization();
 
     leaderMotor.setPosition(0.0);
     followerMotor.setPosition(0.0);
-    followerMotor2.setPosition(0.0);
   }
 
   public void setPosition(double position) {

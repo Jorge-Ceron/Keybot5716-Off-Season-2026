@@ -39,8 +39,11 @@ public class RobotContainer implements RobotCore {
     return new DriveSubsystem(
         new DriveIOCTRE(
             robotState,
-            DriveConstants.SWERVE_DRIVETRAIN.getDrivetrainConstants(),
-            DriveConstants.SWERVE_DRIVETRAIN.getModuleConstants()),
+            TunerConstants.DrivetrainConstants,
+            TunerConstants.FrontLeft,
+            TunerConstants.FrontRight,
+            TunerConstants.BackLeft,
+            TunerConstants.BackRight),
         robotState,
         DRIVE_CONTROLLER,
         TunerConstants.kSpeedAt12Volts.in(MetersPerSecond),

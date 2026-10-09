@@ -30,12 +30,16 @@ public class DriveConstants {
 
   public static ModuleConfig moduleConfig =
       new ModuleConfig(
-          SWERVE_DRIVETRAIN.getModuleConstants()[0].WheelRadius,
+          TunerConstants.FrontLeft
+              .WheelRadius, // Obtiene el radio directamente de las constantes del módulo (0.0508 m
+          // / 2 pulgadas)
           MAX_SPEED,
           WHEEL_COF,
           DCMotor.getKrakenX60(1),
-          SWERVE_DRIVETRAIN.getModuleConstants()[0].DriveMotorGearRatio,
-          SWERVE_DRIVETRAIN.getModuleConstants()[0].SlipCurrent,
+          TunerConstants.FrontLeft
+              .DriveMotorGearRatio, // Obtiene la relación de transmisión directamente (6.538)
+          TunerConstants.FrontLeft
+              .SlipCurrent, // Obtiene la corriente de límite de deslizamiento (120 A)
           1);
 
   public static RobotConfig robotConfig =
