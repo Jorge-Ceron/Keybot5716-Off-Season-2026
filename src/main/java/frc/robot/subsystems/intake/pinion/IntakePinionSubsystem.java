@@ -50,7 +50,7 @@ public class IntakePinionSubsystem extends SubsystemBase {
     REVERSING_PINION,
     STOPPING_PINION,
     INING,
-    OUTING, 
+    OUTING,
     INTAKING,
     HOLDING
   }
@@ -123,7 +123,7 @@ public class IntakePinionSubsystem extends SubsystemBase {
       case INTAKING:
         setPosition(SuperstructureConstants.IntakeConstants.INTAKE_POS);
         break;
-      
+
       case HOLDING:
         setPosition(SuperstructureConstants.IntakeConstants.HOLDING);
         break;

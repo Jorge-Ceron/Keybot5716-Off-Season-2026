@@ -65,7 +65,8 @@ public class DriveSubsystem extends SubsystemBase {
     MANUAL_FIELD_DRIVE,
     ROTATION_LOCK,
     ROTATION_TO_POINT,
-    DRIVE_TO_POSE
+    DRIVE_TO_POSE,
+    ALIGN_TO_SHOOTER
   }
 
   private enum SubsystemState {
@@ -73,11 +74,17 @@ public class DriveSubsystem extends SubsystemBase {
     MANUAL_FIELD_DRIVE,
     ROTATED_TO_ANGLE,
     ROTATED_TO_POINT,
-    DRIVEN_TO_POSE
+    DRIVEN_TO_POSE,
+    ALIGNING_TO_SHOOTER
   }
 
   private DesiredState desiredState = DesiredState.MANUAL_FIELD_DRIVE;
   private SubsystemState currentState = SubsystemState.MANUAL_FIELD_DRIVE;
+
+  private boolean shooterHasLocked = false;
+  private double lastTurnDirection = 0.0;
+  private final edu.wpi.first.math.controller.PIDController shooterAlignController =
+      new edu.wpi.first.math.controller.PIDController(0.045, 0.0, 0.003);
 
   public DriveSubsystem(
       DriveIO io,
@@ -197,6 +204,20 @@ public class DriveSubsystem extends SubsystemBase {
   public void setDesiredPointToLock(Translation2d desiredPoint) {
     setState(DesiredState.ROTATION_TO_POINT);
     this.desiredPoint = desiredPoint;
+  }
+
+  public boolean isAlignedToShooterTarget() {
+    // Si no estamos intentando alinearnos con visión, no estamos listos
+    if (currentState != SubsystemState.ALIGNING_TO_SHOOTER || !shooterHasLocked) {
+      return false;
+    }
+
+    boolean seesTarget = frc.lib.limelight.LimelightHelpers.getTV("limelight-shooter");
+    double tx = frc.lib.limelight.LimelightHelpers.getTX("limelight-shooter");
+
+    // Retorna true SOLO si la cámara del shooter lo está viendo EXACTAMENTE en el centro (error
+    // menor a 3 grados)
+    return seesTarget && Math.abs(tx) < 3.0;
   }
 
   public void setDesiredPoseToAutoAllign(Pose2d desiredPose) {

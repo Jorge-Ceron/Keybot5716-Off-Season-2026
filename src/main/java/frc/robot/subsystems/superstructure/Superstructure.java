@@ -141,13 +141,26 @@ public class Superstructure extends SubsystemBase {
       intakeRollersSub.setDesiredState(IntakeRollersSubsystem.DesiredState.STOPPED);
     }
   }
-
+  /*
   private void score() {
     driveSub.setDesiredPointToLock(FieldConstants.getHubShootingPose().getTranslation());
     intakeRollersSub.setDesiredState(IntakeRollersSubsystem.DesiredState.STOPPED);
     shooterRollerSub.setDesiredState(ShooterRollersSubsystem.DesiredState.FORWARD_ROLLERS);
 
     if (driveSub.isAlignedToPoint() && shooterRollerSub.atDesiredVelocity()) {
+      transferSub.setDesiredState(TransferSubsystem.DesiredState.OSCILLATE_FORWARD);
+    }
+  }
+  */
+
+  private void score() {
+    // ❌ ELIMINAMOS la llamada a setDesiredPointToLock para no interrumpir a la Limelight
+
+    intakeRollersSub.setDesiredState(IntakeRollersSubsystem.DesiredState.STOPPED);
+    shooterRollerSub.setDesiredState(ShooterRollersSubsystem.DesiredState.FORWARD_ROLLERS);
+
+    // ✅ USAMOS el semáforo de la visión real en lugar del matemático
+    if (driveSub.isAlignedToShooterTarget() && shooterRollerSub.atDesiredVelocity()) {
       transferSub.setDesiredState(TransferSubsystem.DesiredState.OSCILLATE_FORWARD);
     }
   }
