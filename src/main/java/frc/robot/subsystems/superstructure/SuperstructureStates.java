@@ -12,7 +12,8 @@ public enum SuperstructureStates {
   MANUAL_TAXI,
   TAXI,
   SHOOTER_TEST,
-  EJECT;
+  EJECT,
+  HOLD;
 
   public boolean isScoring() {
     return this == SCORE || this == SHOOTER_TEST;
@@ -46,6 +47,9 @@ public enum SuperstructureStates {
         return EnumSet.of(HOME, DEFAULT);
 
       case TAXI:
+        return EnumSet.of(HOME, DEFAULT);
+
+      case HOLD:
         return EnumSet.of(HOME, DEFAULT);
 
       default:

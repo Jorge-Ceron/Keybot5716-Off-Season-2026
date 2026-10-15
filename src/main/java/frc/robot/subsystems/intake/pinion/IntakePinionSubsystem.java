@@ -40,7 +40,9 @@ public class IntakePinionSubsystem extends SubsystemBase {
     REVERSE_PINION,
     STOPPPED_PINION,
     IN,
-    OUT
+    OUT,
+    INTAKE,
+    HOLD
   }
 
   private enum IntakeState {
@@ -48,7 +50,9 @@ public class IntakePinionSubsystem extends SubsystemBase {
     REVERSING_PINION,
     STOPPING_PINION,
     INING,
-    OUTING
+    OUTING, 
+    INTAKING,
+    HOLDING
   }
 
   public IntakePinionSubsystem(IntakePinionIO pinionIO, RobotState robotState) {
@@ -89,6 +93,8 @@ public class IntakePinionSubsystem extends SubsystemBase {
       case STOPPPED_PINION -> IntakeState.STOPPING_PINION;
       case IN -> IntakeState.INING;
       case OUT -> IntakeState.OUTING;
+      case INTAKE -> IntakeState.INTAKING;
+      case HOLD -> IntakeState.HOLDING;
     };
   }
 
@@ -112,6 +118,14 @@ public class IntakePinionSubsystem extends SubsystemBase {
 
       case STOPPING_PINION:
         stopPinion();
+        break;
+
+      case INTAKING:
+        setPosition(SuperstructureConstants.IntakeConstants.INTAKE_POS);
+        break;
+      
+      case HOLDING:
+        setPosition(SuperstructureConstants.IntakeConstants.HOLDING);
         break;
     }
   }

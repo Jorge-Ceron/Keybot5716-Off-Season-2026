@@ -129,13 +129,13 @@ public class Superstructure extends SubsystemBase {
 
   private void intake() {
     driveSub.setState(DriveSubsystem.DesiredState.MANUAL_FIELD_DRIVE);
-    // CORREGIDO: Usar intakePivotSub y su propio Enum (ej. pIN / OUT)
-    intakePivotSub.setDesiredState(IntakePivotSubsystem.DesiredState.pIN);
+    // CORREGIDO: Dejar de usar pivot.
+    intakePinionSub.setDesiredState(IntakePinionSubsystem.DesiredState.OUT);
     transferSub.setDesiredState(TransferSubsystem.DesiredState.STOPPED);
     shooterRollerSub.setDesiredState(ShooterRollersSubsystem.DesiredState.STOPPED);
 
-    // CORREGIDO: Método de verificación adaptado al Pivot
-    if (intakePivotSub.ispOut() && intakePinionSub.isOut()) {
+    // CORREGIDO: Dejamos de usar Pivot
+    if (intakePinionSub.isOut()) {
       intakeRollersSub.setDesiredState(IntakeRollersSubsystem.DesiredState.FORWARD_ROLLERS);
     } else {
       intakeRollersSub.setDesiredState(IntakeRollersSubsystem.DesiredState.STOPPED);

@@ -25,12 +25,14 @@ public class SuperstructureConstants {
 
   public static class IntakeConstants {
     // -- PINION CONSTANTS
-    public static final double IN = -9.7;
-    public static final double OUT = 29.0;
+    public static final double IN = -153.0;
+    public static final double INTAKE_POS = 6.5;
+    public static final double HOLDING = 6.0;
+    public static final double OUT = 6.5; 
 
     // -- PIVOT CONSTANTS
-    public static final double pIN = 1.0;
-    public static final double pOUT = -2.5;
+    public static final double pIN = 1.2;
+    public static final double pOUT = 0.1;
 
     // -- ROLLER CONSTANTS
     public static final double ZERO_RVOLTAGE = 0.0;
@@ -44,7 +46,7 @@ public class SuperstructureConstants {
 
   public static class ShooterConstants {
     public static final double TAXI_RPS = 55.0;
-    public static final double SCORE_RPS = 60.0;
+    public static final double SCORE_RPS = 63.0;
 
     public static final double HOME = 0.2;
     public static final double IN_TEST = 0.2;
@@ -56,6 +58,6 @@ public class SuperstructureConstants {
   }
 
   public static class TransferConstants {
-    public static final double FORWARD_RPS = 28.0;
+    public static final double FORWARD_RPS = 38.0;
   }
 }

@@ -178,16 +178,17 @@ public class RobotContainer implements RobotCore {
         .leftBumper()
         .onTrue(superstructure.setCommand(SuperstructureStates.MANUAL_TAXI))
         .onFalse(superstructure.setCommand(SuperstructureStates.DEFAULT));
-    // controller
-    //  .rightTrigger()
-    //  .onTrue(superstructure.setCommand(SuperstructureStates.TAXI, ShootCalculator.hubPreset))
-    //  .onFalse(superstructure.setCommand(SuperstructureStates.DEFAULT));
+    controller
+        .rightTrigger()
+        .onTrue(superstructure.setCommand(SuperstructureStates.TAXI, ShootCalculator.hubPreset))
+        .onFalse(superstructure.setCommand(SuperstructureStates.DEFAULT));
     controller
         .leftTrigger()
         .onTrue(superstructure.setCommand(SuperstructureStates.INTAKE))
         .onFalse(superstructure.setCommand(SuperstructureStates.DEFAULT));
 
     // --- MANUAL CONTROLS
+    /* 
     controller
         .x()
         .onTrue(
@@ -198,6 +199,7 @@ public class RobotContainer implements RobotCore {
         .onTrue(
             Commands.runOnce(
                 () -> intakePivotSub.setDesiredState(IntakePivotSubsystem.DesiredState.pIN)));
+    */
     controller
         .a()
         .onTrue(
