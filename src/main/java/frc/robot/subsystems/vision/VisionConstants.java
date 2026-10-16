@@ -30,27 +30,27 @@ public class VisionConstants {
 
   public static final int kMinFiducialCount = 1;
 
-  // Camera A (Left-side Camera)
-  public static final double kCameraAPitchDegrees = 25.6;
+  // Camera A (Intake-side Camera)
+  public static final double kCameraAPitchDegrees = 0.0;
   public static final double kCameraAPitchRads = Units.degreesToRadians(kCameraAPitchDegrees);
   public static final double kCameraAHeightOffGroundMeters = 0.463;
   public static final String kLimelightATableName = "limelight-frontal";
-  public static final double kRobotToCameraAForward = -0.12;
-  public static final double kRobotToCameraASide = -0.2578;
-  public static final Rotation2d kCameraAYawOffset = Rotation2d.fromDegrees(-90);
+  public static final double kRobotToCameraAForward = 0.685;
+  public static final double kRobotToCameraASide = 0.0;
+  public static final Rotation2d kCameraAYawOffset = Rotation2d.fromDegrees(0.0);
 
   public static final Transform2d kRobotToCameraA =
       new Transform2d(
           new Translation2d(kRobotToCameraAForward, kRobotToCameraASide), kCameraAYawOffset);
 
-  // Camera B (Right-side camera)
-  public static final double kCameraBPitchDegrees = 15;
+  // Camera B (Shooter-side camera)
+  public static final double kCameraBPitchDegrees = 36;
   public static final double kCameraBPitchRads = Units.degreesToRadians(kCameraBPitchDegrees);
   public static final double kCameraBHeightOffGroundMeters = 0.453;
   public static final String kLimelightBTableName = "limelight-back";
-  public static final double kRobotToCameraBForward = -0.258;
-  public static final double kRobotToCameraBSide = -0.335;
-  public static final Rotation2d kCameraBYawOffset = Rotation2d.fromDegrees(90);
+  public static final double kRobotToCameraBForward = -0.685;
+  public static final double kRobotToCameraBSide = 0.0;
+  public static final Rotation2d kCameraBYawOffset = Rotation2d.fromDegrees(180);
   public static final Transform2d kRobotToCameraB =
       new Transform2d(
           new Translation2d(kRobotToCameraBForward, kRobotToCameraBSide), kCameraBYawOffset);
