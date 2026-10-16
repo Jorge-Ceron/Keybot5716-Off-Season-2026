@@ -119,14 +119,6 @@ public class IntakePinionSubsystem extends SubsystemBase {
       case STOPPING_PINION:
         stopPinion();
         break;
-
-      case INTAKING:
-        setPosition(SuperstructureConstants.IntakeConstants.INTAKE_POS);
-        break;
-
-      case HOLDING:
-        setPosition(SuperstructureConstants.IntakeConstants.HOLDING);
-        break;
     }
   }
 
@@ -163,4 +155,15 @@ public class IntakePinionSubsystem extends SubsystemBase {
 
     return MathUtil.clamp(rad, 0.0, Math.PI / 2.0); // hola soy george67676767676767
   }
+
+  public void calibrarPosicionInicial() {
+    // Reemplaza "motorPinion.getPosition()" con el método real de tu encoder/motor
+    double posicionActual = pinionIO.getPosition(); 
+    
+    // Guardamos la posición actual como IN
+    SuperstructureConstants.IntakeConstants.IN = posicionActual;
+    
+    // Actualizamos OUT basándonos en la nueva posición de IN
+    SuperstructureConstants.IntakeConstants.OUT = posicionActual + 156;
+}
 }

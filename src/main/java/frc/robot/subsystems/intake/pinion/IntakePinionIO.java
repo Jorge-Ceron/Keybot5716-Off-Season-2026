@@ -24,6 +24,10 @@ public interface IntakePinionIO extends DataProcessor.IODataRefresher {
 
   void setPosition(double position);
 
+  public default double getPosition() {
+    return 0.0;
+  }
+
   @Override
   default void refreshData() {}
 }

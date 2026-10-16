@@ -103,6 +103,12 @@ public class IntakePinionIOTalonFX implements IntakePinionIO {
     PinMotor.stopMotor();
   }
 
+  //@Override
+  public double getPosition(){
+    return PinMotor.getPosition().getValueAsDouble();
+     
+  }
+
   @Override
   public void updateInputs(IntakePinionIOInputs inputs) {
     inputs.motorConnected =
