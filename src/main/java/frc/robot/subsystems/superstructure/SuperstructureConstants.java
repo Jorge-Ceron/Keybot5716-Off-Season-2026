@@ -26,7 +26,7 @@ public class SuperstructureConstants {
   public static class IntakeConstants {
     // -- PINION CONSTANTS
     public static double IN;
-    public static double OUT = IN + 156;
+    public static double OUT;
 
     // -- PIVOT CONSTANTS
     public static final double pIN = 1.2;

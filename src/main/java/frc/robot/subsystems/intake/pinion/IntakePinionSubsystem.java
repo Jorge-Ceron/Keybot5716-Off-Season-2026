@@ -158,12 +158,12 @@ public class IntakePinionSubsystem extends SubsystemBase {
 
   public void calibrarPosicionInicial() {
     // Reemplaza "motorPinion.getPosition()" con el método real de tu encoder/motor
-    double posicionActual = pinionIO.getPosition(); 
-    
+    double posicionActual = pinionIO.getPosition();
+
     // Guardamos la posición actual como IN
     SuperstructureConstants.IntakeConstants.IN = posicionActual;
-    
+
     // Actualizamos OUT basándonos en la nueva posición de IN
     SuperstructureConstants.IntakeConstants.OUT = posicionActual + 156;
-}
+  }
 }
