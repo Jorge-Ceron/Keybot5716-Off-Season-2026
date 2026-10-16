@@ -164,6 +164,6 @@ public class IntakePinionSubsystem extends SubsystemBase {
     SuperstructureConstants.IntakeConstants.IN = posicionActual;
 
     // Actualizamos OUT basándonos en la nueva posición de IN
-    SuperstructureConstants.IntakeConstants.OUT = posicionActual + 156;
+    SuperstructureConstants.IntakeConstants.OUT = posicionActual + 150;
   }
 }
